@@ -1,23 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using ShipBuilding.Repositories.Interfaces;
 using ShipBuilding.Web.Models;
-using ShipBuilding.Web.Models.Extensions;
 using System.Diagnostics;
 
 namespace ShipBuilding.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IStatisticsRepository _statisticsRepository;
 
-        public HomeController(IUnitOfWork unitOfWork)
+        public HomeController(IStatisticsRepository statisticsRepository)
         {
-            _unitOfWork = unitOfWork;
+            _statisticsRepository = statisticsRepository;
         }
 
         public IActionResult Index()
         {
-            return View(_unitOfWork.GetDashboardModel());
+            return View(_statisticsRepository.GetDashboard());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

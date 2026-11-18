@@ -1,3 +1,4 @@
+@using ShipBuilding.Web.Models.Extensions
 @using static ShipBuilding.Settings.UiSettings
 @model ShipBuilding.Web.Models.AdminPanelModels.AdminPanelModel
 @{
@@ -61,7 +62,7 @@
                 {
                     <tr>
                         <td class="text-muted text-nowrap">@r.Section</td>
-                        <td><a asp-controller="@r.Controller" asp-action="Details" asp-route-id="@r.Id">@(r.Name ?? "—")</a></td>
+                        <td><a asp-controller="@r.Kind.ControllerFor()" asp-action="Details" asp-route-id="@r.Id">@(r.Name ?? "—")</a></td>
                         <td>
                             @foreach (var field in r.MissingFields)
                             {
@@ -69,7 +70,7 @@
                             }
                         </td>
                         <td class="text-end">
-                            <partial name="_ActionButton" model='ActionButtonModel.EditLink(r.Id, "btn-sm", r.Controller)' />
+                            <partial name="_ActionButton" model='ActionButtonModel.EditLink(r.Id, "btn-sm", r.Kind.ControllerFor())' />
                         </td>
                     </tr>
                 }

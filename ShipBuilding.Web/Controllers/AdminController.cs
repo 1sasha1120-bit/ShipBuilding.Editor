@@ -6,16 +6,16 @@ namespace ShipBuilding.Web.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IStatisticsRepository _statisticsRepository;
 
-        public AdminController(IUnitOfWork unitOfWork)
+        public AdminController(IStatisticsRepository statisticsRepository)
         {
-            _unitOfWork = unitOfWork;
+            _statisticsRepository = statisticsRepository;
         }
 
         public IActionResult Index()
         {
-            return View(_unitOfWork.GetAdminPanelModel());
+            return View(_statisticsRepository.GetAdminPanelModel());
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.UiSettings;
 
-namespace ShipBuilding.Web.Models.DashboardModels
+namespace ShipBuilding.Statistics.Dashboard
 {
     public class DashboardModel
     {

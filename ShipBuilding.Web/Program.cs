@@ -1,3 +1,4 @@
+using ShipBuilding.Repositories;
 using ShipBuilding.Repositories.Interfaces;
 using ShipBuilding.Web.Services;
 
@@ -47,6 +48,7 @@ namespace ShipBuilding.Web
                 var initializer = sp.GetRequiredService<DataInitializer>();
                 return initializer.CreateUnitOfWork();
             });
+            builder.Services.AddTransient<IStatisticsRepository, StatisticsRepository>();
         }
     }
 }

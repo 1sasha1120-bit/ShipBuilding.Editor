@@ -1,5 +1,4 @@
 ﻿using Common.Entities;
-using ShipBuilding.Data.Formatting;
 using ShipBuilding.Types;
 using ShipBuilding.Types.Extensions;
 using System;

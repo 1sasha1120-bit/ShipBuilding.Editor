@@ -8,6 +8,7 @@
     <Project Path="Common/Common.csproj" Id="0799b778-536f-4cf7-9c49-d828a91d2848" />
   </Folder>
   <Folder Name="/SubjectAreaLibraries/">
+    <Project Path="ShipBuilding.Analysis/ShipBuilding.Analysis.csproj" />
     <Project Path="ShipBuilding.Repositories/ShipBuilding.Repositories.csproj" Id="42d3b7db-1a40-4d3d-95f3-81cf1378dc89" />
     <Project Path="ShipBuilding/ShipBuilding.csproj" Id="672c0ee1-efea-4188-a685-33ddc9679e1a" />
   </Folder>

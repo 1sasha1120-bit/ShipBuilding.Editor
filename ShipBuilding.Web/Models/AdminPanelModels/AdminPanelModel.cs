@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ShipBuilding.Statistics.DataQuality;
 using static ShipBuilding.Settings.UiSettings;
 
 namespace ShipBuilding.Web.Models.AdminPanelModels

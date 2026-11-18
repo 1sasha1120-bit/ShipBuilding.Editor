@@ -1,19 +1,19 @@
 ﻿using ShipBuilding.Entities;
-using ShipBuilding.Repositories.Interfaces;
+using ShipBuilding.Data.Interfaces;
 using ShipBuilding.Types;
-using ShipBuilding.Web.Models.DashboardModels;
+using ShipBuilding.Statistics.Dashboard;
 using static ShipBuilding.Settings.UiSettings;
 
-namespace ShipBuilding.Web.Models.Extensions
+namespace ShipBuilding.Analysis.Extensions
 {
     public static class DashboardMethods
     {
-        public static DashboardModel GetDashboardModel(this IUnitOfWork unitOfWork)
+        public static DashboardModel GetDashboardModel(this IReadOnlyDataSet data)
         {
-            var types = unitOfWork.TypeOfShipsRepository.GetAll().ToList();
-            var shipyards = unitOfWork.ShipyardsRepository.GetAll().ToList();
-            var projects = unitOfWork.ShipProjectsRepository.GetAll().ToList();
-            var ships = unitOfWork.ShipsRepository.GetAll().ToList();
+            var types = data.Types.ToList();
+            var shipyards = data.Shipyards.ToList();
+            var projects = data.ShipProjects.ToList();
+            var ships = data.Ships.ToList();
             bool hasSingleRoot = types.Count(t => t.Parent is null) == 1;
 
             return new DashboardModel
