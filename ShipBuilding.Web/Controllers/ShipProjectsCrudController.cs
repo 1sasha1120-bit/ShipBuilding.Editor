@@ -155,13 +155,13 @@ namespace ShipBuilding.Web.Controllers
             ShipProject? obj = _objects.FirstOrDefault(e => e.Id == id);
             if (obj == null) return NotFound();
 
-            var model = obj.ToDeletingModel();
+            var model = (ShipProjectBrowsingModel)obj;
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(ShipProjectEditingModel model)
+        public ActionResult Delete(ShipProjectBrowsingModel model)
         {
             ShipProject? obj = _objects.FirstOrDefault(e => e.Id == model.Id);
             if (obj == null)

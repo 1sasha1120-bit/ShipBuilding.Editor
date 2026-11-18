@@ -23,15 +23,6 @@ namespace ShipBuilding.Web.Models.Ships
         [DataType(DataType.Date)]
         public DateTime? LaunchDate { get; set; }
 
-        //[Display(Name = $"{HeightCaption}")]
-        //public double? Height { get; set; }
-
-        //[Display(Name = $"{WidthCaption}")]
-        //public double? Width { get; set; }
-
-        //[Display(Name = $"{LengthCaption}")]
-        //public double? Length { get; set; }
-
         [Display(Name = $"{ShipyardCaption}")]
         public string? ShipyardName { get; set; }
 
@@ -52,11 +43,6 @@ namespace ShipBuilding.Web.Models.Ships
                 Name = obj.Name,
                 RegistrationNumber = obj.RegistrationNumber,
                 LaunchDate = obj.LaunchDate,
-
-                //Height = obj.Height,
-                //Width = obj.Width,
-                //Length = obj.Length,
-
                 ShipyardName = obj.Shipyard?.Name,
                 TypeOfShipName = obj.TypeOfShip?.Name,
             };

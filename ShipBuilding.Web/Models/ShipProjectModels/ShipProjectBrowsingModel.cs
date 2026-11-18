@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ShipBuilding.Entities;
+using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.UiSettings;
 
 namespace ShipBuilding.Web.Models.ShipProjectModels
@@ -22,5 +23,16 @@ namespace ShipBuilding.Web.Models.ShipProjectModels
 
         [Display(Name = DescriptionCaption)]
         public string? Description { get; set; }
+
+        public static explicit operator ShipProjectBrowsingModel(ShipProject obj) =>
+            new ShipProjectBrowsingModel
+            {
+                Id = obj.Id,
+                Name = obj.Name,
+                ProjectCode = obj.ProjectCode,
+                Description = obj.Description,
+                Budget = obj.Budget,
+                ShipyardName = obj.Shipyard?.Name
+            };
     }
 }

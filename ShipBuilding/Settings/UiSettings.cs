@@ -82,6 +82,12 @@
         public const string MissingFieldsCaption = "Не заповнено";
         public const string AllRecordsCompleteMessage = "Усі записи заповнені";
 
+        // Контролери
+        public const string TypesController = "TypeOfShipsCrud";
+        public const string ShipyardsController = "ShipyardsCrud";
+        public const string ProjectsController = "ShipProjectsCrud";
+        public const string ShipsController = "ShipsCrud";
+
         // Налаштування інформації про засоби введення-виведення
         public const string XmlFileTypeCaption = "Файли формату XML";
         public const string XmlFileExtension = ".xml";

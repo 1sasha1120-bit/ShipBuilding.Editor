@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShipBuilding.Entities;
-using ShipBuilding.Repositories.Interfaces;
-using ShipBuilding.Web.Models;
+﻿using ShipBuilding.Entities;
 using ShipBuilding.Web.Models.ShipProjectModels;
 using ShipBuilding.Web.Models.ShipyardModels;
 using ShipBuilding.Web.Models.Ships;
@@ -25,14 +22,6 @@ namespace ShipBuilding.Web.Models.Extensions
                 ShipyardName       = obj.Shipyard?.Name,
                 TypeOfShipName     = obj.TypeOfShip?.Name,
                 ProjectName        = obj.Project?.Name,
-            };
-
-        public static ShipProjectDeletingModel ToDeletingModel(this ShipProject obj) =>
-            new() {
-                Id           = obj.Id,
-                Name         = obj.Name,
-                ProjectCode  = obj.ProjectCode,
-                ShipyardName = obj.Shipyard?.Name,
             };
 
         public static ShipyardDeletingModel ToDeletingModel(this Shipyard obj) =>

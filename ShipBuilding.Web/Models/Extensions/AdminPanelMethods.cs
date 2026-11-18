@@ -7,11 +7,6 @@ namespace ShipBuilding.Web.Models.Extensions
 {
     public static class AdminPanelMethods
     {
-        private const string TypesController = "TypeOfShipsCrud";
-        private const string ShipyardsController = "ShipyardsCrud";
-        private const string ProjectsController = "ShipProjectsCrud";
-        private const string ShipsController = "ShipsCrud";
-
         public static AdminPanelModel GetAdminPanelModel(this IStatisticsRepository statistics)
         {
             var counts = statistics.GetEntityCounts();

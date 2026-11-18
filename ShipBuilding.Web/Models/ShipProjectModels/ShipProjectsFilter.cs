@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.UiSettings;
 
 namespace ShipBuilding.Web.Models.ShipProjectModels
@@ -14,6 +15,6 @@ namespace ShipBuilding.Web.Models.ShipProjectModels
         [Display(Name = ShipyardCaption)]
         public string? ShipyardName { get; set; }
 
-        public Microsoft.AspNetCore.Mvc.Rendering.SelectList? ShipyardNamesList { get; set; }
+        public SelectList? ShipyardNamesList { get; set; }
     }
 }
