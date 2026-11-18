@@ -1,0 +1,61 @@
+﻿@using ShipBuilding.Types
+@model ShipBuilding.Web.Models.ShipModels.ShipsFilter
+
+<form asp-action="Index" method="get">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <label asp-for="Name"></label>
+                   @*  @Html.DisplayNameFor(model => model.Name) *@
+                </th>
+                <th>
+                    <label asp-for="RegistrationNumber"></label>
+                </th>
+                <th>
+                    <label asp-for="LaunchDateMin"></label>
+                </th>
+                <th>
+                    <label asp-for="ShipyardName"></label>
+                </th>
+                <th>
+                    <label asp-for="TypeOfShipName"></label>
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="text" name="Name" value="@Model.Name" class="form-control" />
+                </td>
+                <td>
+                    <input type="text" name="RegistrationNumber" value="@Model.RegistrationNumber" class="form-control" />
+                </td>
+                
+                <td>
+                    від <input asp-for="LaunchDateMin" class="form-control" /><br />
+                    до  <input asp-for="LaunchDateMax" class="form-control" />
+                </td>
+                <td>
+                    <select name="ShipyardName" class="form-select" asp-items="@Model.ShipyardNamesList">
+                        <option value="">-- Всі заводи --</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="TypeOfShipName" class="form-select" asp-items="@Model.TypeOfShipNamesList">
+                        <option value="">-- Всі типи суден --</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary">Пошук</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Очистити</a>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+

@@ -1,0 +1,43 @@
+@model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipBrowsingModel
+@{
+    bool? expandAll = ViewData["ExpandAll"] as bool?;
+    bool isOpen = expandAll.HasValue ? expandAll.Value : Model.Depth < 2;
+}
+
+<li class="tree-node" data-depth="@Model.Depth">
+    @if (Model.HasChildren)
+    {
+        <details @(isOpen ? "open" : "")>
+            <summary class="tree-summary">
+                <span class="tree-arrow"></span>
+                <span class="tree-icon"><i class="fa-solid fa-sitemap"></i></span>
+                <span class="tree-label">@Model.Name</span>
+                @if (!string.IsNullOrWhiteSpace(Model.TypeCode))
+                {<span class="tree-code">@Model.TypeCode</span>}
+                <span class="tree-badge">@Model.Children.Count</span>
+                <span class="tree-actions" onclick="event.stopPropagation()">
+                    <partial name="_RowActions" model="Model.Id" />
+                </span>
+            </summary>
+            <ul class="tree-children">
+                @foreach (var child in Model.Children)
+                {
+                    <partial name="_TreeNode" model="child" />
+                }
+            </ul>
+        </details>
+    }
+    else
+    {
+        <div class="tree-leaf">
+            <span class="tree-leaf-dot"></span>
+            <span class="tree-icon"><i class="fa-solid fa-ship"></i></span>
+            <span class="tree-label">@Model.Name</span>
+            @if (!string.IsNullOrWhiteSpace(Model.TypeCode))
+            {<span class="tree-code">@Model.TypeCode</span>}
+            <span class="tree-actions">
+                <partial name="_RowActions" model="Model.Id" />
+            </span>
+        </div>
+    }
+</li>

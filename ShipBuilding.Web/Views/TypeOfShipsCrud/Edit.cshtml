@@ -1,0 +1,50 @@
+@model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipEditingModel
+@{ ViewData["Title"] = "Тип судна — редагування"; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="entity-card entity-card--sm">
+    <div class="entity-card-header">
+        <span class="entity-icon"><i class="bi bi-pencil-square"></i></span>
+        <div>
+            <h1>Редагування типу судна</h1>
+            <div class="entity-subtitle">@Model.Name</div>
+        </div>
+    </div>
+    <div class="entity-card-body">
+        <form asp-action="Edit" class="entity-form">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-3 validation-summary"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TypeCode"></label>
+                <input asp-for="TypeCode" class="form-control input-w-140" placeholder="TRS" />
+                <span asp-validation-for="TypeCode" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ParentName"></label>
+                <select asp-for="ParentName" asp-items="@Model.ParentSelectList" class="form-select">
+                    <option value="">— Без батьківського типу —</option>
+                </select>
+                <span asp-validation-for="ParentName" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+
+            <div class="entity-actions">
+                <partial name="_ActionButton" model="ActionButtonModel.SaveSubmit()" />
+                <a asp-action="Index" class="btn-back">← Назад до списку</a>
+            </div>
+        </form>
+    </div>
+</div>

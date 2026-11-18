@@ -1,0 +1,88 @@
+@model ShipBuilding.Web.Models.Ships.ShipEditingModel
+@{ ViewData["Title"] = "Судно — редагування"; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="entity-card entity-card--md">
+    <div class="entity-card-header">
+        <span class="entity-icon"><i class="bi bi-pencil-square"></i></span>
+        <div>
+            <h1>Редагування судна</h1>
+            <div class="entity-subtitle">@Model.Name</div>
+        </div>
+    </div>
+    <div class="entity-card-body">
+        <form asp-action="Edit" class="entity-form">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-3 validation-summary"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="RegistrationNumber"></label>
+                <input asp-for="RegistrationNumber" class="form-control input-w-180" placeholder="1234567" />
+                <span asp-validation-for="RegistrationNumber" class="text-danger small"></span>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 mb-3">
+                    <label asp-for="LaunchDate"></label>
+                    <input asp-for="LaunchDate" type="date" class="form-control" />
+                    <span asp-validation-for="LaunchDate" class="text-danger small"></span>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <label asp-for="Status"></label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<ShipBuilding.Types.ShipStatus>()" class="form-select"></select>
+                    <span asp-validation-for="Status" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 mb-3">
+                    <label asp-for="Height"></label>
+                    <input asp-for="Height" step="any" type="number" class="form-control" />
+                    <span asp-validation-for="Height" class="text-danger small"></span>
+                </div>
+                <div class="col-sm-4 mb-3">
+                    <label asp-for="Width"></label>
+                    <input asp-for="Width" step="any" type="number" class="form-control" />
+                    <span asp-validation-for="Width" class="text-danger small"></span>
+                </div>
+                <div class="col-sm-4 mb-3">
+                    <label asp-for="Length"></label>
+                    <input asp-for="Length" step="any" type="number" class="form-control" />
+                    <span asp-validation-for="Length" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ShipyardName"></label>
+                <select asp-for="ShipyardName" asp-items="@Model.ShipyardSelectList" class="form-select">
+                    <option value="">— Оберіть завод —</option>
+                </select>
+                <span asp-validation-for="ShipyardName" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TypeOfShipName"></label>
+                <select asp-for="TypeOfShipName" asp-items="@Model.TypeOfShipSelectList" class="form-select">
+                    <option value="">— Оберіть тип —</option>
+                </select>
+                <span asp-validation-for="TypeOfShipName" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ProjectName"></label>
+                <select asp-for="ProjectName" asp-items="@Model.ProjectSelectList" class="form-select">
+                    <option value="">— Без проєкту —</option>
+                </select>
+                <span asp-validation-for="ProjectName" class="text-danger small"></span>
+            </div>
+
+            <div class="entity-actions">
+                <partial name="_ActionButton" model="ActionButtonModel.SaveSubmit()" />
+                <a asp-action="Index" class="btn-back">← Назад до списку</a>
+            </div>
+        </form>
+    </div>
+</div>

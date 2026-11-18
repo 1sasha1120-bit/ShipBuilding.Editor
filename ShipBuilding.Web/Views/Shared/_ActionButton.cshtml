@@ -1,0 +1,24 @@
+@model ActionButtonModel
+@{
+    var (style, content) = (Model.Kind, Model.Submit) switch
+    {
+        (ActionButtonKind.Create, false) => ("btn-primary",        "<i class=\"bi bi-plus-lg\"></i> Створити"),
+        (ActionButtonKind.Create, true)  => ("btn-primary",        "<i class=\"bi bi-bookmark\"></i> Створити"),
+        (ActionButtonKind.Save,   _)     => ("btn-primary",        "<i class=\"bi bi-bookmark\"></i> Зберегти"),
+        (ActionButtonKind.Edit,   _)     => ("btn-primary",        "<i class=\"bi bi-pencil\"></i> Редагувати"),
+        (ActionButtonKind.Delete, false) => ("btn-outline-danger", "<i class=\"bi bi-trash\"></i> Видалити"),
+        (ActionButtonKind.Delete, true)  => ("btn-danger",         "<i class=\"bi bi-trash\"></i> Так, видалити"),
+        _ => ("btn-secondary", Model.Kind.ToString())
+    };
+    var css = $"btn {style} {Model.CssClass}".Trim();
+    var controller = Model.Controller ?? ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+@if (Model.Submit)
+{
+    <button type="submit" class="@css">@Html.Raw(content)</button>
+}
+else
+{
+    <a asp-controller="@controller" asp-action="@Model.Kind.ToString()" asp-route-id="@Model.Id" class="@css">@Html.Raw(content)</a>
+}

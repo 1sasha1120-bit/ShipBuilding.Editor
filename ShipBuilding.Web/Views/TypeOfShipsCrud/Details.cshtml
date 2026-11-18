@@ -1,0 +1,45 @@
+@model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipEditingModel
+@{ ViewData["Title"] = "Тип судна — деталі"; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="entity-card entity-card--lg">
+    <div class="entity-card-header">
+        <span class="entity-icon"><i class="fa-solid fa-sitemap"></i></span>
+        <div>
+            <h1>@Model.Name</h1>
+            <div class="entity-subtitle">Тип судна · детальна інформація</div>
+        </div>
+    </div>
+    <div class="entity-card-body">
+        <div class="detail-grid">
+            <div class="detail-label">Назва</div>
+            <div class="detail-value">@Model.Name</div>
+
+            <div class="detail-label">Код типу</div>
+            <div class="detail-value">
+                @if (!string.IsNullOrWhiteSpace(Model.TypeCode))
+                { <span class="field-badge">@Model.TypeCode</span> }
+                else { <span class="text-muted">—</span> }
+            </div>
+
+            <div class="detail-label">Тип вищого рівня</div>
+            <div class="detail-value">
+                @(string.IsNullOrWhiteSpace(Model.ParentName) ? "—" : Model.ParentName)
+            </div>
+
+            <div class="detail-label">Опис</div>
+            <div class="detail-value text-pre-wrap">
+                @(string.IsNullOrWhiteSpace(Model.Description) ? "—" : Model.Description)
+            </div>
+        </div>
+
+        <div class="entity-actions">
+            <partial name="_ActionButton" model="ActionButtonModel.EditLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonModel.DeleteLink(Model.Id)" />
+            <a asp-action="Index" class="btn-back">← Назад до списку</a>
+        </div>
+    </div>
+</div>

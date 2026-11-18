@@ -1,0 +1,69 @@
+@using ShipBuilding.Types.Extensions;
+@model ShipBuilding.Web.Models.Ships.ShipEditingModel
+@{ ViewData["Title"] = "Судно — деталі"; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="entity-card entity-card--lg">
+    <div class="entity-card-header">
+        <span class="entity-icon"><i class="fa-solid fa-ship"></i></span>
+        <div>
+            <h1>@Model.Name</h1>
+            <div class="entity-subtitle">Судно · детальна інформація</div>
+        </div>
+    </div>
+    <div class="entity-card-body">
+        <div class="detail-grid">
+            <div class="detail-label">Назва</div>
+            <div class="detail-value">@Model.Name</div>
+
+            <div class="detail-label">Реєстраційний номер IMO</div>
+            <div class="detail-value">
+                @if (!string.IsNullOrWhiteSpace(Model.RegistrationNumber))
+                { <span class="field-badge">@Model.RegistrationNumber</span> }
+                else { <span class="text-muted">—</span> }
+            </div>
+
+            <div class="detail-label">Дата спуску на воду</div>
+            <div class="detail-value">@(Model.LaunchDate?.ToString("dd.MM.yyyy") ?? "—")</div>
+
+            <div class="detail-label">Статус</div>
+            <div class="detail-value">
+                @{
+                    var statusColors = new Dictionary<int, string> {
+                        {1,"success"},{2,"warning"},{3,"secondary"},{4,"danger"},{0,"light"}
+                    };
+                    int sVal = (int)Model.Status;
+                    string sColor = statusColors.ContainsKey(sVal) ? statusColors[sVal] : "secondary";
+                }
+                <span class="badge bg-@sColor text-@(sColor == "light" ? "dark" : "white") fs-6">@Model.Status.GetDisplayName()</span>
+            </div>
+
+            <div class="detail-label">Висота, м</div>
+            <div class="detail-value">@(Model.Height?.ToString("F1") ?? "—")</div>
+
+            <div class="detail-label">Ширина, м</div>
+            <div class="detail-value">@(Model.Width?.ToString("F1") ?? "—")</div>
+
+            <div class="detail-label">Довжина, м</div>
+            <div class="detail-value">@(Model.Length?.ToString("F1") ?? "—")</div>
+
+            <div class="detail-label">Завод</div>
+            <div class="detail-value">@(Model.ShipyardName ?? "—")</div>
+
+            <div class="detail-label">Тип судна</div>
+            <div class="detail-value">@(Model.TypeOfShipName ?? "—")</div>
+
+            <div class="detail-label">ПроЄкт</div>
+            <div class="detail-value">@(Model.ProjectName ?? "—")</div>
+        </div>
+
+        <div class="entity-actions">
+            <partial name="_ActionButton" model="ActionButtonModel.EditLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonModel.DeleteLink(Model.Id)" />
+            <a asp-action="Index" class="btn-back">← Назад до списку</a>
+        </div>
+    </div>
+</div>

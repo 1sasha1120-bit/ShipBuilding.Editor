@@ -1,0 +1,45 @@
+@using System.Globalization
+@model ShipBuilding.Web.Models.ShipProjectModels.ShipProjectEditingModel
+@{ ViewData["Title"] = "Проєкт — деталі"; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="entity-card entity-card--lg">
+    <div class="entity-card-header">
+        <span class="entity-icon"><i class="fa-solid fa-compass-drafting"></i></span>
+        <div>
+            <h1>@Model.Name</h1>
+            <div class="entity-subtitle">Проєкт судна · детальна інформація</div>
+        </div>
+    </div>
+    <div class="entity-card-body">
+        <div class="detail-grid">
+            <div class="detail-label">Назва</div>
+            <div class="detail-value">@Model.Name</div>
+
+            <div class="detail-label">Код проєкту</div>
+            <div class="detail-value">
+                @if (!string.IsNullOrWhiteSpace(Model.ProjectCode))
+                { <span class="field-badge">@Model.ProjectCode</span> }
+                else { <span class="text-muted">—</span> }
+            </div>
+
+            <div class="detail-label">Завод</div>
+            <div class="detail-value">@(Model.ShipyardName ?? "—")</div>
+
+            <div class="detail-label">Бюджет</div>
+            <div class="detail-value">@Model.Budget?.ToString("C", new CultureInfo("en-US"))</div>
+
+            <div class="detail-label">Опис</div>
+            <div class="detail-value text-pre-wrap">@(string.IsNullOrWhiteSpace(Model.Description) ? "—" : Model.Description)</div>
+        </div>
+
+        <div class="entity-actions">
+            <partial name="_ActionButton" model="ActionButtonModel.EditLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonModel.DeleteLink(Model.Id)" />
+            <a asp-action="Index" class="btn-back">← Назад до списку</a>
+        </div>
+    </div>
+</div>

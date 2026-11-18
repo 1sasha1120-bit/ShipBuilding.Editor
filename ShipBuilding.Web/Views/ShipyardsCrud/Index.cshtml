@@ -1,0 +1,54 @@
+@model ShipBuilding.Web.Models.ShipyardModels.ShipyardSelectionModel
+@{ ViewData["Title"] = "Суднобудівні заводи"; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex align-items-center gap-3 mb-3">
+    <h1 class="mb-0"><i class="fa-solid fa-industry"></i> Суднобудівні заводи</h1>
+    <partial name="_ActionButton" model='ActionButtonModel.CreateLink("btn-sm ms-auto")' />
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">← Адмін</a>
+</div>
+
+<partial name="_IndexFilter" model="@Model.Filter" />
+
+<div class="entity-card">
+    <div class="entity-card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th><a asp-action="Index" asp-route-filter="@Model.Filter" asp-route-NameOrder="@Model.SortingInfo.NameOrder" asp-route-sortFieldName="Name" class="text-decoration-none text-dark fw-bold">Назва <i class="bi bi-arrow-down-up"></i></a></th>
+                    <th><a asp-action="Index" asp-route-filter="@Model.Filter" asp-route-CountryNameOrder="@Model.SortingInfo.CountryNameOrder" asp-route-sortFieldName="CountryName" class="text-decoration-none text-dark fw-bold">Країна <i class="bi bi-arrow-down-up"></i></a></th>
+                    <th><a asp-action="Index" asp-route-filter="@Model.Filter" asp-route-YearOfFoundedOrder="@Model.SortingInfo.YearOfFoundedOrder" asp-route-sortFieldName="YearOfFounded" class="text-decoration-none text-dark fw-bold">Рік <i class="bi bi-arrow-down-up"></i></a></th>
+                    <th><a asp-action="Index" asp-route-filter="@Model.Filter" asp-route-NumberOfDocksOrder="@Model.SortingInfo.NumberOfDocksOrder" asp-route-sortFieldName="NumberOfDocks" class="text-decoration-none text-dark fw-bold">Доків <i class="bi bi-arrow-down-up"></i></a></th>
+                    <th><a asp-action="Index" asp-route-filter="@Model.Filter" asp-route-CapacityPerYearOrder="@Model.SortingInfo.CapacityPerYearOrder" asp-route-sortFieldName="CapacityPerYear" class="text-decoration-none text-dark fw-bold">Потужність <i class="bi bi-arrow-down-up"></i></a></th>
+                    <th class="col-actions-170"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.FilteredData)
+                {
+                    <tr>
+                        <td class="fw-500">@item.Name</td>
+                        <td>@(item.CountryName ?? "—")</td>
+                        <td>@(item.YearOfFounded?.ToString() ?? "—")</td>
+                        <td>@(item.NumberOfDocks?.ToString() ?? "—")</td>
+                        <td>@(item.CapacityPerYear.HasValue ? item.CapacityPerYear.Value.ToString("N0") + " т" : "—")</td>
+                        <td>
+                            <partial name="_RowActions" model="item.Id" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

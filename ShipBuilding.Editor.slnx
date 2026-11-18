@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Applications/">
+    <Project Path="ShipBuilding.Web/ShipBuilding.Web.csproj" />
+  </Folder>
+  <Folder Name="/CommonLibraries/">
+    <Project Path="Common.Data/Common.Data.csproj" Id="0a715d56-22b8-4fcf-bb4b-96451517b1d4" />
+    <Project Path="Common.Repositories/Common.Repositories.csproj" Id="adee2dc4-dd51-43c6-a7f2-5652b9e92b8c" />
+    <Project Path="Common/Common.csproj" Id="0799b778-536f-4cf7-9c49-d828a91d2848" />
+  </Folder>
+  <Folder Name="/SubjectAreaLibraries/">
+    <Project Path="ShipBuilding.Repositories/ShipBuilding.Repositories.csproj" Id="42d3b7db-1a40-4d3d-95f3-81cf1378dc89" />
+    <Project Path="ShipBuilding/ShipBuilding.csproj" Id="672c0ee1-efea-4188-a685-33ddc9679e1a" />
+  </Folder>
+</Solution>

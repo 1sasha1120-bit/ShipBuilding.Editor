@@ -1,0 +1,39 @@
+@using ShipBuilding.Web.Models.ShipyardModels
+@model ShipBuilding.Web.Models.ShipyardModels.ShipyardsFilter
+
+<form asp-action="Index" method="get">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CountryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearOfFoundedFrom)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="text" name="Name" value="@Model.Name" class="form-control" />
+                </td>
+                <td>
+                    <input type="text" name="CountryName" value="@Model.CountryName" class="form-control" />
+                </td>
+                <td>
+                    від <input asp-for="YearOfFoundedFrom" class="form-control" /><br />
+                    до  <input asp-for="YearOfFoundedTo" class="form-control" />
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary">Пошук</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Очистити</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="ShipBuilding.Entities.Ship">
+    <Position X="0.5" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBAAQAAQEAAAACERAAEAQAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Ship.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Status" />
+      <Property Name="Shipyard" />
+      <Property Name="TypeOfShip" />
+      <Property Name="Project" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ShipBuilding.Entities.ShipProject">
+    <Position X="4.25" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQEAAAAAAQAAAAQIAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Entities\ShipProject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Shipyard" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ShipBuilding.Entities.Shipyard">
+    <Position X="7.75" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAQAAAEAQEAAAAAAQAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Shipyard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShipBuilding.Entities.TypeOfShip">
+    <Position X="11.5" Y="4" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQEAAAAQAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TypeOfShip.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Parent" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Common.Entities.Entity">
+    <Position X="4.25" Y="1.25" Width="2.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="ShipBuilding.Types.ShipStatus">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Types\ShipStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

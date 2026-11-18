@@ -1,0 +1,285 @@
+﻿@using ShipBuilding.Types
+@using ShipBuilding.Types.Extensions
+@using static ShipBuilding.Settings.UiSettings
+@model ShipBuilding.Web.Models.DashboardModels.DashboardModel
+@{
+    ViewData["Title"] = HomePageTitle;
+
+    static string StatusColor(ShipStatus status) => status switch
+    {
+        ShipStatus.InService      => "success",
+        ShipStatus.UnderRepair    => "warning",
+        ShipStatus.InReserve      => "secondary",
+        ShipStatus.Decommissioned => "danger",
+        _                         => "light"
+    };
+
+    static string Money(decimal value) =>
+        value.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+}
+
+<div class="d-flex align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="mb-1">@ShortSubjectAreaTitle</h1>
+        <p class="text-muted mb-0">@DashboardSubtitle</p>
+    </div>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm ms-auto">
+        <i class="bi bi-gear"></i> @AdminPanelCaption
+    </a>
+</div>
+
+<div class="dash-stats mb-4">
+    <a asp-controller="TypeOfShipsCrud" asp-action="Index" class="dash-stat">
+        <div class="dash-stat-icon"><i class="fa-solid fa-sitemap"></i></div>
+        <div>
+            <div class="dash-stat-value">@Model.TypesCount</div>
+            <div class="dash-stat-label">@Html.DisplayNameFor(m => m.TypesCount)</div>
+        </div>
+    </a>
+    <a asp-controller="ShipyardsCrud" asp-action="Index" class="dash-stat">
+        <div class="dash-stat-icon"><i class="fa-solid fa-industry"></i></div>
+        <div>
+            <div class="dash-stat-value">@Model.ShipyardsCount</div>
+            <div class="dash-stat-label">@Html.DisplayNameFor(m => m.ShipyardsCount)</div>
+        </div>
+    </a>
+    <a asp-controller="ShipProjectsCrud" asp-action="Index" class="dash-stat">
+        <div class="dash-stat-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+        <div>
+            <div class="dash-stat-value">@Model.ProjectsCount</div>
+            <div class="dash-stat-label">@Html.DisplayNameFor(m => m.ProjectsCount)</div>
+        </div>
+    </a>
+    <a asp-controller="ShipsCrud" asp-action="Index" class="dash-stat">
+        <div class="dash-stat-icon"><i class="fa-solid fa-ship"></i></div>
+        <div>
+            <div class="dash-stat-value">@Model.ShipsCount</div>
+            <div class="dash-stat-label">@Html.DisplayNameFor(m => m.ShipsCount)</div>
+        </div>
+    </a>
+</div>
+
+<div class="entity-card mb-4">
+    <div class="entity-card-header">
+        <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.ShipsByStatus)</h2>
+    </div>
+    <div class="entity-card-body">
+        @if (Model.ShipsByStatus.Count == 0)
+        {
+            <p class="text-muted mb-0">Суден ще немає.</p>
+        }
+        else
+        {
+            <div class="progress dash-status-bar mb-3">
+                @foreach (var s in Model.ShipsByStatus)
+                {
+                    <div class="progress-bar bg-@StatusColor(s.Status)"
+                         style="width:@s.Percent.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)%"
+                         title="@s.Status.GetDisplayName(): @s.Count"></div>
+                }
+            </div>
+            <div class="dash-status-legend">
+                @foreach (var s in Model.ShipsByStatus)
+                {
+                    <div class="dash-status-item">
+                        <span class="dash-dot bg-@StatusColor(s.Status)"></span>
+                        <span>@s.Status.GetDisplayName()</span>
+                        <strong>@s.Count</strong>
+                        <span class="text-muted">(@s.Percent.ToString("F0")%)</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<div class="dash-columns mb-4">
+    <div class="entity-card">
+        <div class="entity-card-header">
+            <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.ShipsByCategory)</h2>
+        </div>
+        <div class="entity-card-body">
+            @if (Model.ShipsByCategory.Count == 0)
+            {
+                <p class="text-muted mb-0">@NoShipsMessage</p>
+            }
+            else
+            {
+                <div class="dash-bars">
+                    @foreach (var c in Model.ShipsByCategory)
+                    {
+                        <div class="dash-bar-row">
+                            <div class="dash-bar-label">
+                                @if (c.Id.HasValue)
+                                {
+                                    <a asp-controller="TypeOfShipsCrud" asp-action="Details" asp-route-id="@c.Id">@c.Name</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">@c.Name</span>
+                                }
+                            </div>
+                            <div class="dash-bar-track">
+                                <div class="dash-bar-fill" style="width:@c.Percent.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)%"></div>
+                            </div>
+                            <div class="dash-bar-value">@c.Count</div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="entity-card">
+        <div class="entity-card-header">
+            <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.Budget)</h2>
+        </div>
+        <div class="entity-card-body">
+            @if (Model.Budget is null)
+            {
+                <p class="text-muted mb-0">@NoBudgetsMessage</p>
+            }
+            else
+            {
+                <div class="dash-kpis">
+                    <div>
+                        <div class="dash-kpi-value">@Money(Model.Budget.Total)</div>
+                        <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.Total)</div>
+                    </div>
+                    <div>
+                        <div class="dash-kpi-value">@Money(Model.Budget.Average)</div>
+                        <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.Average)</div>
+                    </div>
+                    <div>
+                        <div class="dash-kpi-value">@Model.Budget.ProjectsWithBudget <span class="text-muted fs-6">/ @Model.ProjectsCount</span></div>
+                        <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.ProjectsWithBudget)</div>
+                    </div>
+                </div>
+                @if (Model.Budget.MostExpensive is { } top)
+                {
+                    <div class="dash-highlight mt-3">
+                        <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.MostExpensive)</div>
+                        <div class="d-flex align-items-baseline gap-2 flex-wrap">
+                            <a asp-controller="ShipProjectsCrud" asp-action="Details" asp-route-id="@top.Id" class="fw-semibold">@top.Name</a>
+                            @if (!string.IsNullOrWhiteSpace(top.ProjectCode))
+                            {
+                                <span class="field-badge">@top.ProjectCode</span>
+                            }
+                            <span class="ms-auto fw-bold">@Money(top.Budget ?? 0)</span>
+                        </div>
+                        <div class="text-muted small">@(top.ShipyardName ?? "—")</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="dash-columns">
+    <div class="entity-card">
+        <div class="entity-card-header">
+            <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.Shipyards)</h2>
+        </div>
+        <div class="entity-card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Shipyards[0].Name)</th>
+                        <th>@Html.DisplayNameFor(m => m.Shipyards[0].CountryName)</th>
+                        <th class="text-end">@Html.DisplayNameFor(m => m.Shipyards[0].ShipsCount)</th>
+                        <th class="text-end">@Html.DisplayNameFor(m => m.Shipyards[0].ProjectsCount)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var y in Model.Shipyards)
+                    {
+                        <tr>
+                            <td><a asp-controller="ShipyardsCrud" asp-action="Details" asp-route-id="@y.Id">@y.Name</a></td>
+                            <td>@(y.CountryName ?? "—")</td>
+                            <td class="text-end">@y.ShipsCount</td>
+                            <td class="text-end">@y.ProjectsCount</td>
+                        </tr>
+                    }
+                    @if (Model.Shipyards.Count == 0)
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-4">Заводів ще немає</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="entity-card">
+        <div class="entity-card-header">
+            <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.LatestShips)</h2>
+        </div>
+        <div class="entity-card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.LatestShips[0].Name)</th>
+                        <th>@Html.DisplayNameFor(m => m.LatestShips[0].TypeOfShipName)</th>
+                        <th class="text-end">@Html.DisplayNameFor(m => m.LatestShips[0].LaunchDate)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.LatestShips)
+                    {
+                        <tr>
+                            <td><a asp-controller="ShipsCrud" asp-action="Details" asp-route-id="@s.Id">@s.Name</a></td>
+                            <td>@(s.TypeOfShipName ?? "—")</td>
+                            <td class="text-end">@s.LaunchDate?.ToString("dd.MM.yyyy")</td>
+                        </tr>
+                    }
+                    @if (Model.LatestShips.Count == 0)
+                    {
+                        <tr><td colspan="3" class="text-center text-muted py-4">Немає суден з датою спуску</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="entity-card mt-4">
+    <div class="entity-card-header">
+        <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.ProjectsWithoutShips)</h2>
+        <span class="badge rounded-pill bg-secondary">@Model.ProjectsWithoutShips.Count</span>
+    </div>
+    <div class="entity-card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.ProjectsWithoutShips[0].Name)</th>
+                    <th>@Html.DisplayNameFor(m => m.ProjectsWithoutShips[0].ProjectCode)</th>
+                    <th>@Html.DisplayNameFor(m => m.ProjectsWithoutShips[0].ShipyardName)</th>
+                    <th class="text-end">@Html.DisplayNameFor(m => m.ProjectsWithoutShips[0].Budget)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.ProjectsWithoutShips)
+                {
+                    <tr>
+                        <td><a asp-controller="ShipProjectsCrud" asp-action="Details" asp-route-id="@p.Id">@p.Name</a></td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(p.ProjectCode))
+                            { <span class="field-badge">@p.ProjectCode</span> }
+                            else { <span class="text-muted">—</span> }
+                        </td>
+                        <td>@(p.ShipyardName ?? "—")</td>
+                        <td class="text-end">@(p.Budget.HasValue ? Money(p.Budget.Value) : "—")</td>
+                    </tr>
+                }
+                @if (Model.ProjectsWithoutShips.Count == 0)
+                {
+                    <tr><td colspan="4" class="text-center text-muted py-4">@AllProjectsHaveShipsMessage</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

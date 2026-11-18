@@ -1,0 +1,44 @@
+@model ShipBuilding.Web.Models.ShipyardModels.ShipyardEditingModel
+@{ ViewData["Title"] = "Завод — деталі"; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="entity-card entity-card--lg">
+    <div class="entity-card-header">
+        <span class="entity-icon"><i class="fa-solid fa-industry"></i></span>
+        <div>
+            <h1>@Model.Name</h1>
+            <div class="entity-subtitle">Суднобудівний завод · детальна інформація</div>
+        </div>
+    </div>
+    <div class="entity-card-body">
+        <div class="detail-grid">
+            <div class="detail-label">Назва</div>
+            <div class="detail-value">@Model.Name</div>
+
+            <div class="detail-label">Країна</div>
+            <div class="detail-value">@(Model.CountryName ?? "—")</div>
+
+            <div class="detail-label">Рік заснування</div>
+            <div class="detail-value">@(Model.YearOfFounded?.ToString() ?? "—")</div>
+
+            <div class="detail-label">Кількість доків</div>
+            <div class="detail-value">@(Model.NumberOfDocks?.ToString() ?? "—")</div>
+
+            <div class="detail-label">Річна потужність</div>
+            <div class="detail-value">
+                @if (Model.CapacityPerYear.HasValue)
+                { <span>@Model.CapacityPerYear.Value.ToString("N0") т</span> }
+                else { <span class="text-muted">—</span> }
+            </div>
+        </div>
+
+        <div class="entity-actions">
+            <partial name="_ActionButton" model="ActionButtonModel.EditLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonModel.DeleteLink(Model.Id)" />
+            <a asp-action="Index" class="btn-back">← Назад до списку</a>
+        </div>
+    </div>
+</div>
