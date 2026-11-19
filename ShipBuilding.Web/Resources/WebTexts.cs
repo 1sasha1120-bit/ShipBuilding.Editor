@@ -16,6 +16,17 @@ namespace ShipBuilding.Web.Resources
         public const string AllProjectsHaveShipsMessage = "Для кожного проєкту вже є судна";
         public const string NoShipsMessage = "Суден ще немає";
 
+        // Перегляд довідників і реєстрів з головної сторінки (без редагування)
+        public const string BrowseSubtitle = "Перегляд";
+        public const string BackToHomeCaption = "← Головна";
+        public const string NoRecordsMessage = "Записів ще немає";
+
+        // Пагінація
+        public const string PaginationCaption = "Сторінки";
+        public const string PreviousPageCaption = "Попередня сторінка";
+        public const string NextPageCaption = "Наступна сторінка";
+        public const string ShownRecordsFormat = "Записи {0}–{1} з {2}";
+
         // Адмін панель
         public const string AdminPanelCaption = "Адмін панель";
         public const string AdminPanelSubtitle = "Редагування довідників і реєстрів";

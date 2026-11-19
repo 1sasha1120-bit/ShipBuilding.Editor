@@ -1,0 +1,48 @@
+@model PagedList<ShipBuilding.Web.Models.ShipyardModels.ShipyardBrowsingModel>
+@{ ViewData["Title"] = FullShipyardsHeader; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="d-flex align-items-center gap-3 mb-3">
+    <div>
+        <h1 class="mb-1"><i class="fa-solid fa-industry"></i> @FullShipyardsHeader</h1>
+        <p class="text-muted mb-0">@BrowseSubtitle</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-auto">@BackToHomeCaption</a>
+</div>
+
+<div class="entity-card">
+    <div class="entity-card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].Name)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].CountryName)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].YearOfFounded)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].NumberOfDocks)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].CapacityPerYear)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td class="fw-medium">@item.Name</td>
+                        <td>@(item.CountryName ?? "—")</td>
+                        <td>@(item.YearOfFounded?.ToString() ?? "—")</td>
+                        <td>@(item.NumberOfDocks?.ToString() ?? "—")</td>
+                        <td>@(item.CapacityPerYear.HasValue ? item.CapacityPerYear.Value.ToString("N0") + " " + TonnesUnit : "—")</td>
+                    </tr>
+                }
+                @if (Model.Items.Count == 0)
+                {
+                    <tr><td colspan="5" class="text-center text-muted py-4">@NoShipyardsMessage</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_Pager" model="Model.Paging" />

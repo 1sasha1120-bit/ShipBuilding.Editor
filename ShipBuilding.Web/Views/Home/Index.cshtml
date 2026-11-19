@@ -33,28 +33,28 @@
 </div>
 
 <div class="dash-stats mb-4">
-    <a asp-controller="TypeOfShipsCrud" asp-action="Index" class="dash-stat">
+    <a asp-controller="Home" asp-action="TypeOfShips" class="dash-stat">
         <div class="dash-stat-icon"><i class="fa-solid fa-sitemap"></i></div>
         <div>
             <div class="dash-stat-value">@Model.TypesCount</div>
             <div class="dash-stat-label">@Html.DisplayNameFor(m => m.TypesCount)</div>
         </div>
     </a>
-    <a asp-controller="ShipyardsCrud" asp-action="Index" class="dash-stat">
+    <a asp-controller="Home" asp-action="Shipyards" class="dash-stat">
         <div class="dash-stat-icon"><i class="fa-solid fa-industry"></i></div>
         <div>
             <div class="dash-stat-value">@Model.ShipyardsCount</div>
             <div class="dash-stat-label">@Html.DisplayNameFor(m => m.ShipyardsCount)</div>
         </div>
     </a>
-    <a asp-controller="ShipProjectsCrud" asp-action="Index" class="dash-stat">
+    <a asp-controller="Home" asp-action="ShipProjects" class="dash-stat">
         <div class="dash-stat-icon"><i class="fa-solid fa-compass-drafting"></i></div>
         <div>
             <div class="dash-stat-value">@Model.ProjectsCount</div>
             <div class="dash-stat-label">@Html.DisplayNameFor(m => m.ProjectsCount)</div>
         </div>
     </a>
-    <a asp-controller="ShipsCrud" asp-action="Index" class="dash-stat">
+    <a asp-controller="Home" asp-action="Ships" class="dash-stat">
         <div class="dash-stat-icon"><i class="fa-solid fa-ship"></i></div>
         <div>
             <div class="dash-stat-value">@Model.ShipsCount</div>

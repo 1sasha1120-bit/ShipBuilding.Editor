@@ -1,0 +1,48 @@
+@model PagedList<ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipBrowsingModel>
+@{ ViewData["Title"] = TypeOfShipsHeader; }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
+}
+
+<div class="d-flex align-items-center gap-3 mb-3">
+    <div>
+        <h1 class="mb-1"><i class="fa-solid fa-sitemap"></i> @TypeOfShipsHeader</h1>
+        <p class="text-muted mb-0">@BrowseSubtitle</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-auto">@BackToHomeCaption</a>
+</div>
+
+<div class="entity-card">
+    <div class="entity-card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].Name)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].TypeCode)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items[0].ParentName)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td class="@(item.Depth == 0 ? "fw-semibold" : "fw-medium")">@item.Name</td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(item.TypeCode))
+                            { <span class="field-badge">@item.TypeCode</span> }
+                            else { <span class="text-muted">—</span> }
+                        </td>
+                        <td>@(item.ParentName ?? "—")</td>
+                    </tr>
+                }
+                @if (Model.Items.Count == 0)
+                {
+                    <tr><td colspan="3" class="text-center text-muted py-4">@NoRecordsMessage</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_Pager" model="Model.Paging" />

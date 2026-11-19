@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ShipBuilding.Entities;
+using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.UiSettings;
 
 namespace ShipBuilding.Web.Models.ShipyardModels
@@ -21,5 +22,16 @@ namespace ShipBuilding.Web.Models.ShipyardModels
 
         [Display(Name = CapacityPerYearCaption)]
         public double? CapacityPerYear { get; set; }
+
+        public static explicit operator ShipyardBrowsingModel(Shipyard obj) =>
+            new ShipyardBrowsingModel
+            {
+                Id = obj.Id,
+                Name = obj.Name,
+                CountryName = obj.CountryName,
+                YearOfFounded = obj.YearOfFounded,
+                NumberOfDocks = obj.NumberOfDocks,
+                CapacityPerYear = obj.CapacityPerYear
+            };
     }
 }
