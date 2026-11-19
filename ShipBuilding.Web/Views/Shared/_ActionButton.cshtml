@@ -2,12 +2,12 @@
 @{
     var (style, content) = (Model.Kind, Model.Submit) switch
     {
-        (ActionButtonKind.Create, false) => ("btn-primary",        "<i class=\"bi bi-plus-lg\"></i> Створити"),
-        (ActionButtonKind.Create, true)  => ("btn-primary",        "<i class=\"bi bi-bookmark\"></i> Створити"),
-        (ActionButtonKind.Save,   _)     => ("btn-primary",        "<i class=\"bi bi-bookmark\"></i> Зберегти"),
-        (ActionButtonKind.Edit,   _)     => ("btn-primary",        "<i class=\"bi bi-pencil\"></i> Редагувати"),
-        (ActionButtonKind.Delete, false) => ("btn-outline-danger", "<i class=\"bi bi-trash\"></i> Видалити"),
-        (ActionButtonKind.Delete, true)  => ("btn-danger",         "<i class=\"bi bi-trash\"></i> Так, видалити"),
+        (ActionButtonKind.Create, false) => ("btn-primary",        $"<i class=\"bi bi-plus-lg\"></i> {CreateCaption}"),
+        (ActionButtonKind.Create, true)  => ("btn-primary",        $"<i class=\"bi bi-bookmark\"></i> {CreateCaption}"),
+        (ActionButtonKind.Save,   _)     => ("btn-primary",        $"<i class=\"bi bi-bookmark\"></i> {SaveCaption}"),
+        (ActionButtonKind.Edit,   _)     => ("btn-primary",        $"<i class=\"bi bi-pencil\"></i> {EditCaption}"),
+        (ActionButtonKind.Delete, false) => ("btn-outline-danger", $"<i class=\"bi bi-trash\"></i> {DeleteCaption}"),
+        (ActionButtonKind.Delete, true)  => ("btn-danger",         $"<i class=\"bi bi-trash\"></i> {ConfirmDeleteCaption}"),
         _ => ("btn-secondary", Model.Kind.ToString())
     };
     var css = $"btn {style} {Model.CssClass}".Trim();

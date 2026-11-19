@@ -1,5 +1,5 @@
 @model int
 
-<a asp-action="Edit" asp-route-id="@Model" class="btn btn-sm btn-outline-primary" title="Редагувати"><i class="bi bi-pencil-square"></i></a>
-<a asp-action="Details" asp-route-id="@Model" class="btn btn-sm btn-outline-secondary" title="Деталі"><i class="bi bi-search"></i></a>
-<a asp-action="Delete" asp-route-id="@Model" class="btn btn-sm btn-outline-danger" title="Видалити"><i class="bi bi-trash"></i></a>
+<a asp-action="Edit" asp-route-id="@Model" class="btn btn-sm btn-outline-primary" title="@EditCaption"><i class="bi bi-pencil-square"></i></a>
+<a asp-action="Details" asp-route-id="@Model" class="btn btn-sm btn-outline-secondary" title="@DetailsCaption"><i class="bi bi-search"></i></a>
+<a asp-action="Delete" asp-route-id="@Model" class="btn btn-sm btn-outline-danger" title="@DeleteCaption"><i class="bi bi-trash"></i></a>

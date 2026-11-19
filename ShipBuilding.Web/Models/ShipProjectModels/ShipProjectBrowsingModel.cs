@@ -1,6 +1,7 @@
 ﻿using ShipBuilding.Entities;
 using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebTexts;
 
 namespace ShipBuilding.Web.Models.ShipProjectModels
 {
@@ -11,13 +12,13 @@ namespace ShipBuilding.Web.Models.ShipProjectModels
         [Display(Name = NameCaption)]
         public string? Name { get; set; }
 
-        [Display(Name = "Код проєкту")]
+        [Display(Name = ProjectCodeCaption)]
         public string? ProjectCode { get; set; }
 
         [Display(Name = ShipyardCaption)]
         public string? ShipyardName { get; set; }
 
-        [Display(Name = "Бюджет, USD")]
+        [Display(Name = BudgetUsdCaption)]
         [DataType(DataType.Currency)]
         public decimal? Budget { get; set; }
 

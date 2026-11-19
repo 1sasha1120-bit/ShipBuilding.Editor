@@ -5,6 +5,7 @@ using ShipBuilding.Repositories.Interfaces;
 using ShipBuilding.Web.Models.Extensions;
 using ShipBuilding.Web.Models.ShipyardModels;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebMessages;
 
 namespace ShipBuilding.Web.Controllers
 {
@@ -64,13 +65,13 @@ namespace ShipBuilding.Web.Controllers
                     {
                         _repository.Add(obj);
                         _unitOfWork.Save();
-                        TempData["message"] = $"Дані про {ShipyardCaption.ToLower()} \"{obj.Key}\" додано";
+                        TempData["message"] = CreatedMessage(ShipyardCaption, obj.Key);
                         return RedirectToAction("Index");
                     }
                     catch (Exception ex)
                     {
                         ModelState.AddModelError("",
-                            $"Помилка створення запису про {ShipyardCaption.ToLower()}: " + ex.Message);
+                            CreatingErrorMessage(ShipyardCaption, ex.Message));
                     }
                 }
             }
@@ -103,13 +104,13 @@ namespace ShipBuilding.Web.Controllers
                     {
                         _repository.Update(obj);
                         _unitOfWork.Save();
-                        TempData["message"] = $"Дані про {ShipyardCaption.ToLower()} \"{obj.Key}\" змінено";
+                        TempData["message"] = UpdatedMessage(ShipyardCaption, obj.Key);
                         return RedirectToAction("Index");
                     }
                     catch (Exception ex)
                     {
                         ModelState.AddModelError("",
-                            $"Помилка редагування запису про {ShipyardCaption.ToLower()}: " + ex.Message);
+                            UpdatingErrorMessage(ShipyardCaption, ex.Message));
                     }
                 }
             }
@@ -133,7 +134,7 @@ namespace ShipBuilding.Web.Controllers
             var obj = _objects.FirstOrDefault(e => e.Id == model.Id);
             if (obj == null)
             {
-                TempData["message"] = $"Дані про {ShipyardCaption.ToLower()} \"{model.Id}\" відсутні у сховищі";
+                TempData["message"] = NotFoundMessage(ShipyardCaption, model.Id);
             }
             else
             {
@@ -144,7 +145,7 @@ namespace ShipBuilding.Web.Controllers
                 }
                 _repository.Delete(model.Id);
                 _unitOfWork.Save();
-                TempData["message"] = $"Дані про {ShipyardCaption.ToLower()} \"{obj.Key}\" видалено";
+                TempData["message"] = DeletedMessage(ShipyardCaption, obj.Key);
             }
             return RedirectToAction("Index");
         }

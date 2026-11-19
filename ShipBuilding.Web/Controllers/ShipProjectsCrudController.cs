@@ -6,6 +6,7 @@ using ShipBuilding.Web.Models.Extensions;
 using ShipBuilding.Web.Models.ShipProjectModels;
 using static ShipBuilding.Web.Models.ShipProjectModels.ShipProjectSelectionModel;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebMessages;
 
 namespace ShipBuilding.Web.Controllers
 {
@@ -78,13 +79,13 @@ namespace ShipBuilding.Web.Controllers
                         _repository.Add(obj);
                         _unitOfWork.Save();
 
-                        TempData["message"] = $"Дані про {ProjectCaption.ToLower()} \"{obj.Key}\" додано";
+                        TempData["message"] = CreatedMessage(ProjectCaption, obj.Key);
                         return RedirectToAction("Index");
                     }
                     catch (Exception ex)
                     {
                         ModelState.AddModelError("",
-                            $"Помилка створення запису про {ProjectCaption.ToLower()} : " + ex.Message);
+                            CreatingErrorMessage(ProjectCaption, ex.Message));
                     }
                 }
             }
@@ -125,13 +126,13 @@ namespace ShipBuilding.Web.Controllers
                         _repository.Update(obj);
                         _unitOfWork.Save();
 
-                        TempData["message"] = $"Дані про {ProjectCaption.ToLower()} \"{obj.Key}\" змінено";
+                        TempData["message"] = UpdatedMessage(ProjectCaption, obj.Key);
                         return RedirectToAction("Index");
                     }
                     catch (Exception ex)
                     {
                         ModelState.AddModelError("",
-                            $"Помилка редагування запису про {ProjectCaption.ToLower()}: " + ex.Message);
+                            UpdatingErrorMessage(ProjectCaption, ex.Message));
                     }
                 }
             }
@@ -158,7 +159,7 @@ namespace ShipBuilding.Web.Controllers
             ShipProject? obj = _objects.FirstOrDefault(e => e.Id == model.Id);
             if (obj == null)
             {
-                TempData["message"] = $"Дані про {ProjectCaption.ToLower()} \"{model.Id}\" відсутні у сховищі";
+                TempData["message"] = NotFoundMessage(ProjectCaption, model.Id);
             }
             else
             {
@@ -169,7 +170,7 @@ namespace ShipBuilding.Web.Controllers
                 }
                 _repository.Delete(model.Id);
                 _unitOfWork.Save();
-                TempData["message"] = $"Дані про {ProjectCaption.ToLower()} \"{obj.Key}\" видалено";
+                TempData["message"] = DeletedMessage(ProjectCaption, obj.Key);
             }
             return RedirectToAction("Index");
         }

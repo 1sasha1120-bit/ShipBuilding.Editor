@@ -26,12 +26,12 @@
                     <input asp-for="CountryName" class="form-control" />
                 </td>
                 <td>
-                    від <input asp-for="YearOfFoundedFrom" class="form-control" /><br />
-                    до  <input asp-for="YearOfFoundedTo" class="form-control" />
+                    @RangeFromCaption <input asp-for="YearOfFoundedFrom" class="form-control" /><br />
+                    @RangeToCaption <input asp-for="YearOfFoundedTo" class="form-control" />
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-primary">Пошук</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary">Очистити</a>
+                    <button type="submit" class="btn btn-primary">@SearchCaption</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">@ClearCaption</a>
                 </td>
             </tr>
         </tbody>

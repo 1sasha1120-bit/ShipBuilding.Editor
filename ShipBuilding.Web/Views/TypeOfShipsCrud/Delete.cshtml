@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipDeletingModel
-@{ ViewData["Title"] = "Тип судна — видалення"; }
+@{ ViewData["Title"] = TypeOfShipDeleteTitle; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -9,7 +9,7 @@
     <div class="entity-card-header">
         <span class="entity-icon"><i class="bi bi-trash"></i></span>
         <div>
-            <h1>Видалення типу судна</h1>
+            <h1>@DeleteTypeOfShipHeader</h1>
             <div class="entity-subtitle">@Model.Name</div>
         </div>
     </div>
@@ -21,21 +21,21 @@
             </div>
         }
         <div class="delete-warning">
-            <i class="bi bi-exclamation-triangle"></i> Цю дію неможливо скасувати. Запис буде видалено назавжди.
+            <i class="bi bi-exclamation-triangle"></i> @DeleteWarningMessage
         </div>
 
         <div class="detail-grid">
-            <div class="detail-label">Назва</div>
+            <div class="detail-label">@NameCaption</div>
             <div class="detail-value">@Model.Name</div>
 
-            <div class="detail-label">Код типу</div>
+            <div class="detail-label">@TypeCodeCaption</div>
             <div class="detail-value">
                 @if (!string.IsNullOrWhiteSpace(Model.TypeCode))
                 { <span class="field-badge">@Model.TypeCode</span> }
                 else { <span class="text-muted">—</span> }
             </div>
 
-            <div class="detail-label">Тип вищого рівня</div>
+            <div class="detail-label">@ParentCaption</div>
             <div class="detail-value">@(string.IsNullOrWhiteSpace(Model.ParentName) ? "—" : Model.ParentName)</div>
         </div>
 
@@ -43,7 +43,7 @@
             <input type="hidden" asp-for="Id" />
             <div class="entity-actions">
                 <partial name="_ActionButton" model="ActionButtonModel.DeleteSubmit()" />
-                <a asp-action="Index" class="btn btn-outline-secondary">Скасувати</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">@CancelCaption</a>
             </div>
         </form>
     </div>

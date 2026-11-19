@@ -1,6 +1,6 @@
 ﻿namespace ShipBuilding.Settings
 {
-    public static class UiSettings
+    public static partial class UiSettings
     {
         // Налаштування інформації про ПО
         public const string SubjectAreaTitle = "ПО \"Суднобудування\"";
@@ -21,7 +21,7 @@
         public const string NameCaption = "Назва";
         public const string DescriptionCaption = "Опис";
         //Судна
-        public const string RegistrationNumberCaption = "Реєстаційний номер IMO";
+        public const string RegistrationNumberCaption = "Реєстраційний номер IMO";
         public const string LaunchDateCaption = "Дата спуску на воду";
         public const string StatusCaption = "Статус";
         public const string HeightCaption = "Висота, м";
@@ -37,10 +37,14 @@
         public const string ParentCaption = "Тип вищого рівня";
         public const string TypeCodeCaption = "Код типу";
 
+        // Статуси суден
+        public const string StatusUnknownCaption = "Невідомо";
+        public const string StatusInServiceCaption = "В експлуатації";
+        public const string StatusUnderRepairCaption = "На ремонті";
+        public const string StatusInReserveCaption = "В резерві";
+        public const string StatusDecommissionedCaption = "Списано";
+
         // Головна сторінка (dashboard)
-        public const string HomePageTitle = "Головна";
-        public const string DashboardSubtitle = "Зведена інформація по базі даних";
-        public const string AdminPanelCaption = "Адмін панель";
         public const string ShipsByStatusHeader = "Судна за статусом";
         public const string TopShipyardsHeader = "Найбільші заводи";
         public const string LatestShipsHeader = "Останні спущені на воду";
@@ -57,36 +61,17 @@
         public const string AverageBudgetCaption = "Середній бюджет";
         public const string ProjectsWithBudgetCaption = "Проєктів з бюджетом";
         public const string MostExpensiveProjectCaption = "Найдорожчий проєкт";
-        public const string NoBudgetsMessage = "Жоден проєкт не має бюджету";
         // — проєкти без суден
         public const string ProjectsWithoutShipsHeader = "Проєкти без суден";
         public const string ProjectCodeCaption = "Код проєкту";
-        public const string AllProjectsHaveShipsMessage = "Для кожного проєкту вже є судна";
         // — судна за категоріями (типи верхнього рівня)
         public const string ShipsByCategoryHeader = "Судна за категоріями";
         public const string CategoryCaption = "Категорія";
         public const string WithoutTypeCaption = "Без типу";
-        public const string NoShipsMessage = "Суден ще немає";
 
-        // Адмін панель
-        public const string AdminPanelSubtitle = "Редагування довідників і реєстрів";
-        public const string HomePageCaption = "Головна";
-        public const string OpenListCaption = "Відкрити";
-        public const string RecordsCountCaption = "Записів";
-        public const string TypeOfShipsDescription = "Ієрархія та класифікація";
-        public const string ShipyardsDescription = "Суднобудівні підприємства";
-        public const string ProjectsDescription = "Проєкти суден і бюджети";
-        public const string ShipsDescription = "Реєстр суден";
-        public const string IncompleteRecordsHeader = "Потребують заповнення";
+        // Дані про якість записів (адмін панель)
         public const string EntityCaption = "Розділ";
         public const string MissingFieldsCaption = "Не заповнено";
-        public const string AllRecordsCompleteMessage = "Усі записи заповнені";
-
-        // Контролери
-        public const string TypesController = "TypeOfShipsCrud";
-        public const string ShipyardsController = "ShipyardsCrud";
-        public const string ProjectsController = "ShipProjectsCrud";
-        public const string ShipsController = "ShipsCrud";
 
         // Налаштування інформації про засоби введення-виведення
         public const string XmlFileTypeCaption = "Файли формату XML";

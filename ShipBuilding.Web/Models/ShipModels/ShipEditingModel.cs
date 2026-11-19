@@ -5,6 +5,7 @@ using ShipBuilding.Web.Infrastructure.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.Limitation;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebMessages;
 
 namespace ShipBuilding.Web.Models.Ships
 {
@@ -16,10 +17,9 @@ namespace ShipBuilding.Web.Models.Ships
 
         [Display(Name = NameCaption)]
         [Required(ErrorMessage =
-             $"Потрібно заповнити поле \'{NameCaption}\'")]
+             RequiredFieldMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
-             ErrorMessage = $"{NameCaption} {ShipsHeader}"
-             + "повинна містити від {2} до {1} символів")]
+             ErrorMessage = StringLengthMessage)]
         public string? Name { get; set; }
 
 
@@ -33,41 +33,38 @@ namespace ShipBuilding.Web.Models.Ships
         [Display(Name = LaunchDateCaption)]
         [DataType(DataType.Date)]
         [PastDate(ErrorMessage =
-            "Дата спуску на воду не може перевищувати сьогоднішню")]
+            LaunchDateInFutureMessage)]
         public DateTime? LaunchDate { get; set; }
 
         [Display(Name = StatusCaption)]
-        [Required(ErrorMessage = $"Виберіть {StatusCaption}")]
-        [Range(1, 4, ErrorMessage = $"Виберіть {StatusCaption}")]
+        [Required(ErrorMessage = RequiredSelectionMessage)]
+        [Range(1, 4, ErrorMessage = RequiredSelectionMessage)]
         public ShipStatus Status { get; set; }
 
         [Display(Name = $"{HeightCaption}")]
-        [Range(HeightOfShipMinLength, HeighthOfShipMaxLength, ErrorMessage = $"{HeightCaption}"
-            + "повинно бути в межах від {1} до {2}")]
+        [Range(HeightOfShipMinLength, HeighthOfShipMaxLength, ErrorMessage = RangeMessage)]
         public double? Height { get; set; }
 
 
         [Display(Name = $"{WidthCaption}")]
-        [Range(WidthOfShipMinLength, WidthOfShipMaxLength, ErrorMessage = $"{WidthCaption}"
-            + "повинно бути в межах від {1} до {2}")]
+        [Range(WidthOfShipMinLength, WidthOfShipMaxLength, ErrorMessage = RangeMessage)]
         public double? Width { get; set; }
 
 
         [Display(Name = $"{LengthCaption}")]
-        [Range(LengthOfShipMinLength, LengthOfShipMaxLength, ErrorMessage = $"{LengthCaption}"
-            + "повинно бути в межах від {1} до {2}")]
+        [Range(LengthOfShipMinLength, LengthOfShipMaxLength, ErrorMessage = RangeMessage)]
         public double? Length { get; set; }
 
 
         [Display(Name = $"{ShipyardCaption}")]
         [Required(ErrorMessage =
-     $"Потрібно заповнити поле \'{ShipyardCaption}\'")]
+     RequiredFieldMessage)]
         public string? ShipyardName { get; set; }
 
 
         [Display(Name = $"{TypeOfShipCaption}")]
         [Required(ErrorMessage =
-    $"Потрібно заповнити поле \'{TypeOfShipCaption}\'")]
+    RequiredFieldMessage)]
         public string? TypeOfShipName { get; set; }
 
         [Display(Name = $"{ProjectCaption}")]

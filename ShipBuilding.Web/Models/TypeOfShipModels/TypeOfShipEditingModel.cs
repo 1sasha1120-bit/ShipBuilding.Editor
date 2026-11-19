@@ -4,6 +4,7 @@ using ShipBuilding.Entities;
 using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.Limitation;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebMessages;
 
 namespace ShipBuilding.Web.Models.TypeOfShipModels
 {
@@ -13,9 +14,9 @@ namespace ShipBuilding.Web.Models.TypeOfShipModels
         public int Id { get; set; }
 
         [Display(Name = NameCaption)]
-        [Required(ErrorMessage = $"Потрібно заповнити поле '{NameCaption}'")]
+        [Required(ErrorMessage = RequiredFieldMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
-            ErrorMessage = $"Назва повинна містити від {{2}} до {{1}} символів")]
+            ErrorMessage = StringLengthMessage)]
         public string? Name { get; set; }
 
         [Display(Name = TypeCodeCaption)]

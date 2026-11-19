@@ -2,6 +2,7 @@
 using Common.Processing.Interfaces;
 using Common.Processing.Types;
 using System;
+using static Common.Settings.CommonTexts;
 
 namespace Common.Processing.Editing {
     public abstract class BaseEditor<TModel> : IEditor<TModel> {
@@ -32,7 +33,7 @@ namespace Common.Processing.Editing {
                 return;
             }
             DoCreate(model);
-            OnDataChanged(new StringEventArgs("Дані додано"));
+            OnDataChanged(new StringEventArgs(DataAddedMessage));
         }
 
         protected abstract bool CheckCreation(TModel model, out string? message);
@@ -44,7 +45,7 @@ namespace Common.Processing.Editing {
                 return;
             }
             DoUpdate(model);
-            OnDataChanged(new StringEventArgs("Дані оновлено"));
+            OnDataChanged(new StringEventArgs(DataUpdatedMessage));
         }
 
         protected abstract bool CheckUpdating(TModel model, out string? message);
@@ -56,7 +57,7 @@ namespace Common.Processing.Editing {
                 return;
             }
             DoDelete(model);
-            OnDataChanged(new StringEventArgs("Дані видалено"));
+            OnDataChanged(new StringEventArgs(DataDeletedMessage));
         }
 
         protected abstract bool CheckDeleting(TModel model, out string? message);

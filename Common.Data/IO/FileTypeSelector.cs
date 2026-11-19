@@ -1,6 +1,7 @@
 ﻿using Common.Interfaces;
 using System;
 using System.Collections.Generic;
+using static Common.Settings.CommonTexts;
 
 namespace Common.Data.IO {
     public class FileTypeSelector {
@@ -31,7 +32,7 @@ namespace Common.Data.IO {
         public void Select() {
             //throw new NotImplementedException();
             IKeyable? selectedObj = KeyableSelector(_fileTypeInformers,
-                "Виберіть тип файлу", CurrentInformer.Key, true);
+                SelectFileTypeCaption, CurrentInformer.Key, true);
             if (selectedObj is FileTypeInformer informer)
             {
                 CurrentInformer = informer;

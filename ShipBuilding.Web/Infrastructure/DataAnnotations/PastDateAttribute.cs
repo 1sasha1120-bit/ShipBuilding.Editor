@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
+using static ShipBuilding.Web.Resources.WebMessages;
 
 namespace ShipBuilding.Web.Infrastructure.DataAnnotations
 {
@@ -21,7 +22,7 @@ namespace ShipBuilding.Web.Infrastructure.DataAnnotations
             // Додаємо атрибут, який JS зможе прочитати
             context.Attributes.Add("data-val", "true");
             context.Attributes.Add("data-val-pastdate",
-                ErrorMessage ?? "Дата не може бути в майбутньому");
+                ErrorMessage ?? FutureDateMessage);
         }
 
     }

@@ -27,12 +27,12 @@
                 </td>
                 <td>
                     <select asp-for="ShipyardName" class="form-select" asp-items="Model.ShipyardNamesList">
-                        <option value="">-- Всі заводи --</option>
+                        <option value="">@AllShipyardsOption</option>
                     </select>
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-primary">Пошук</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary">Очистити</a>
+                    <button type="submit" class="btn btn-primary">@SearchCaption</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">@ClearCaption</a>
                 </td>
             </tr>
         </tbody>

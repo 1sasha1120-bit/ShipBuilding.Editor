@@ -1,6 +1,6 @@
 @using System.Globalization
 @model ShipBuilding.Web.Models.ShipProjectModels.ShipProjectEditingModel
-@{ ViewData["Title"] = "Проєкт — деталі"; }
+@{ ViewData["Title"] = ProjectDetailsTitle; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -11,35 +11,35 @@
         <span class="entity-icon"><i class="fa-solid fa-compass-drafting"></i></span>
         <div>
             <h1>@Model.Name</h1>
-            <div class="entity-subtitle">Проєкт судна · детальна інформація</div>
+            <div class="entity-subtitle">@ProjectDetailsSubtitle</div>
         </div>
     </div>
     <div class="entity-card-body">
         <div class="detail-grid">
-            <div class="detail-label">Назва</div>
+            <div class="detail-label">@NameCaption</div>
             <div class="detail-value">@Model.Name</div>
 
-            <div class="detail-label">Код проєкту</div>
+            <div class="detail-label">@ProjectCodeCaption</div>
             <div class="detail-value">
                 @if (!string.IsNullOrWhiteSpace(Model.ProjectCode))
                 { <span class="field-badge">@Model.ProjectCode</span> }
                 else { <span class="text-muted">—</span> }
             </div>
 
-            <div class="detail-label">Завод</div>
+            <div class="detail-label">@ShipyardCaption</div>
             <div class="detail-value">@(Model.ShipyardName ?? "—")</div>
 
-            <div class="detail-label">Бюджет</div>
+            <div class="detail-label">@BudgetCaption</div>
             <div class="detail-value">@Model.Budget?.ToString("C", new CultureInfo("en-US"))</div>
 
-            <div class="detail-label">Опис</div>
+            <div class="detail-label">@DescriptionCaption</div>
             <div class="detail-value text-pre-wrap">@(string.IsNullOrWhiteSpace(Model.Description) ? "—" : Model.Description)</div>
         </div>
 
         <div class="entity-actions">
             <partial name="_ActionButton" model="ActionButtonModel.EditLink(Model.Id)" />
             <partial name="_ActionButton" model="ActionButtonModel.DeleteLink(Model.Id)" />
-            <a asp-action="Index" class="btn-back">← Назад до списку</a>
+            <a asp-action="Index" class="btn-back">@BackToListCaption</a>
         </div>
     </div>
 </div>

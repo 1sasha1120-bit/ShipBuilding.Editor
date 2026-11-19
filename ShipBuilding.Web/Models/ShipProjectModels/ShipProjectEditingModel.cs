@@ -3,6 +3,8 @@ using ShipBuilding.Entities;
 using System.ComponentModel.DataAnnotations;
 using static ShipBuilding.Settings.Limitation;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebTexts;
+using static ShipBuilding.Web.Resources.WebMessages;
 
 namespace ShipBuilding.Web.Models.ShipProjectModels
 {
@@ -12,28 +14,28 @@ namespace ShipBuilding.Web.Models.ShipProjectModels
         public int Id { get; set; }
 
         [Display(Name = NameCaption)]
-        [Required(ErrorMessage = $"Потрібно заповнити поле '{NameCaption}'")]
+        [Required(ErrorMessage = RequiredFieldMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
-            ErrorMessage = $"Назва повинна містити від {{2}} до {{1}} символів")]
+            ErrorMessage = StringLengthMessage)]
         public string? Name { get; set; }
 
-        [Display(Name = "Код проєкту")]
+        [Display(Name = ProjectCodeCaption)]
         [RegularExpression(ProjectCodeLimitation,
-            ErrorMessage = "Формат: SP-РРРР-НН (напр. SP-2024-001)")]
+            ErrorMessage = ProjectCodeErrorMessage)]
         public string? ProjectCode { get; set; }
 
         [Display(Name = DescriptionCaption)]
         [StringLength(DescriptionMaxLength, MinimumLength = 0)]
         public string? Description { get; set; }
 
-        [Display(Name = "Бюджет, USD")]
+        [Display(Name = BudgetUsdCaption)]
         [Range(0, (double)decimal.MaxValue,
-            ErrorMessage = "Бюджет не може бути від'ємним")]
+            ErrorMessage = NonNegativeMessage)]
         [DataType(DataType.Currency)]
         public decimal? Budget { get; set; }
 
         [Display(Name = ShipyardCaption)]
-        [Required(ErrorMessage = $"Потрібно обрати '{ShipyardCaption}'")]
+        [Required(ErrorMessage = RequiredSelectionMessage)]
         public string? ShipyardName { get; set; }
 
         [ScaffoldColumn(false)]

@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipEditingModel
-@{ ViewData["Title"] = "Новий тип судна"; }
+@{ ViewData["Title"] = NewTypeOfShipHeader; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -9,8 +9,8 @@
     <div class="entity-card-header">
         <span class="entity-icon"><i class="bi bi-plus-lg"></i></span>
         <div>
-            <h1>Новий тип судна</h1>
-            <div class="entity-subtitle">Заповніть поля та збережіть</div>
+            <h1>@NewTypeOfShipHeader</h1>
+            <div class="entity-subtitle">@FillFormSubtitle</div>
         </div>
     </div>
     <div class="entity-card-body">
@@ -30,7 +30,7 @@
             <div class="mb-3">
                 <label asp-for="ParentName"></label>
                 <select asp-for="ParentName" asp-items="@Model.ParentSelectList" class="form-select">
-                    <option value="">— Без батьківського типу —</option>
+                    <option value="">@NoParentOption</option>
                 </select>
                 <span asp-validation-for="ParentName" class="text-danger small"></span>
             </div>
@@ -42,7 +42,7 @@
 
             <div class="entity-actions">
                 <partial name="_ActionButton" model="ActionButtonModel.CreateSubmit()" />
-                <a asp-action="Index" class="btn-back">← Назад до списку</a>
+                <a asp-action="Index" class="btn-back">@BackToListCaption</a>
             </div>
         </form>
     </div>

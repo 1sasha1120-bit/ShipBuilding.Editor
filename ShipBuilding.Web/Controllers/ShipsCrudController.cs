@@ -6,6 +6,7 @@ using ShipBuilding.Web.Models.Extensions;
 using ShipBuilding.Web.Models.ShipModels;
 using ShipBuilding.Web.Models.Ships;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebMessages;
 
 namespace ShipBuilding.Web.Controllers
 {
@@ -84,13 +85,13 @@ namespace ShipBuilding.Web.Controllers
                         _repository.Add(obj);
                         _unitOfWork.Save();
 
-                        TempData["message"] = $"Дані про {ShipCaption.ToLower()} \"{obj.Key}\" додано";
+                        TempData["message"] = CreatedMessage(ShipCaption, obj.Key);
                         return RedirectToAction("Index");
                     }
                     catch (Exception ex)
                     {
                         ModelState.AddModelError("",
-                            $"Помилка створення запису про {ShipCaption.ToLower()} : " + ex.Message);
+                            CreatingErrorMessage(ShipCaption, ex.Message));
                     }
                 }
             }
@@ -138,13 +139,13 @@ namespace ShipBuilding.Web.Controllers
                         _repository.Update(obj);
                         _unitOfWork.Save();
 
-                        TempData["message"] = $"Дані про {ShipCaption.ToLower()} \"{obj.Key}\" змінено";
+                        TempData["message"] = UpdatedMessage(ShipCaption, obj.Key);
                         return RedirectToAction("Index");
                     }
                     catch (Exception ex)
                     {
                         ModelState.AddModelError("",
-                            $"Помилка редагування запису про {ShipCaption.ToLower()}: " + ex.Message);
+                            UpdatingErrorMessage(ShipCaption, ex.Message));
                     }
                 }
             }
@@ -175,13 +176,13 @@ namespace ShipBuilding.Web.Controllers
             var obj = _objects.FirstOrDefault(e => e.Id == model.Id);
             if (obj == null)
             {
-                TempData["message"] = $"Дані про {ShipCaption} \"{model.Id}\" відсутні у сховищі";
+                TempData["message"] = NotFoundMessage(ShipCaption, model.Id);
             }
             else
             {
                 _repository.Delete(model.Id);
                 _unitOfWork.Save();
-                TempData["message"] = $"Дані про {ShipCaption} \"{obj.Key}\" видалено";
+                TempData["message"] = DeletedMessage(ShipCaption, obj.Key);
             }
             return RedirectToAction("Index");
         }

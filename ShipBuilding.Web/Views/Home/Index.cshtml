@@ -1,6 +1,5 @@
 ﻿@using ShipBuilding.Types
 @using ShipBuilding.Types.Extensions
-@using static ShipBuilding.Settings.UiSettings
 @model ShipBuilding.Statistics.Dashboard.DashboardModel
 @{
     ViewData["Title"] = HomePageTitle;
@@ -71,7 +70,7 @@
     <div class="entity-card-body">
         @if (Model.ShipsByStatus.Count == 0)
         {
-            <p class="text-muted mb-0">Суден ще немає.</p>
+            <p class="text-muted mb-0">@NoShipsMessage</p>
         }
         else
         {
@@ -207,7 +206,7 @@
                     }
                     @if (Model.Shipyards.Count == 0)
                     {
-                        <tr><td colspan="4" class="text-center text-muted py-4">Заводів ще немає</td></tr>
+                        <tr><td colspan="4" class="text-center text-muted py-4">@NoShipyardsMessage</td></tr>
                     }
                 </tbody>
             </table>
@@ -238,7 +237,7 @@
                     }
                     @if (Model.LatestShips.Count == 0)
                     {
-                        <tr><td colspan="3" class="text-center text-muted py-4">Немає суден з датою спуску</td></tr>
+                        <tr><td colspan="3" class="text-center text-muted py-4">@NoLaunchedShipsMessage</td></tr>
                     }
                 </tbody>
             </table>

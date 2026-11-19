@@ -2,6 +2,7 @@
 using Common.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using static Common.Settings.CommonTexts;
 
 namespace Common.Processing.Editing {
     public abstract class BaseViewsController {
@@ -36,7 +37,7 @@ namespace Common.Processing.Editing {
             if (sender is not ISavingView view)
                 return;
 
-            view.ShowStatusMessage("Дані збережено");
+            view.ShowStatusMessage(DataSavedMessage);
 
         }
 

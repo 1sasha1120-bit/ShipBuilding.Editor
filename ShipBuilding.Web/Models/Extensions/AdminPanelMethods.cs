@@ -2,6 +2,8 @@
 using ShipBuilding.Statistics.DataQuality;
 using ShipBuilding.Web.Models.AdminPanelModels;
 using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebTexts;
+using static ShipBuilding.Web.Infrastructure.ControllerNames;
 
 namespace ShipBuilding.Web.Models.Extensions
 {

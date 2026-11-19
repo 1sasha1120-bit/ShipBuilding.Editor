@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipSelectionModel
-@{ ViewData["Title"] = "Типи суден"; }
+@{ ViewData["Title"] = TypeOfShipsHeader; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -22,9 +22,9 @@
 }
 
 <div class="d-flex align-items-center gap-3 mb-3">
-    <h1 class="mb-0"><i class="fa-solid fa-sitemap"></i> Типи суден</h1>
+    <h1 class="mb-0"><i class="fa-solid fa-sitemap"></i> @TypeOfShipsHeader</h1>
     <partial name="_ActionButton" model='ActionButtonModel.CreateLink("btn-sm ms-auto")' />
-    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">← Адмін</a>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">@BackToAdminCaption</a>
 </div>
 
 <partial name="_IndexFilter" model="@Model.Filter" />
@@ -62,7 +62,7 @@
                     }
                     @if (!Model.FilteredData.Any())
                     {
-                        <tr><td colspan="4" class="text-center text-muted py-4">Нічого не знайдено</td></tr>
+                        <tr><td colspan="4" class="text-center text-muted py-4">@NothingFoundMessage</td></tr>
                     }
                 </tbody>
             </table>
@@ -75,9 +75,9 @@ else
     <div class="entity-card">
         <div class="entity-card-body p-3">
             <div class="tree-ctrl">
-                <span class="text-muted small">Ієрархія типів:</span>
-                <a asp-action="Index" asp-route-expand="true" class="tree-ctrl-btn"><i class="bi bi-plus-square"></i> Розгорнути всі</a>
-                <a asp-action="Index" asp-route-expand="false" class="tree-ctrl-btn"><i class="bi bi-dash-square"></i> Згорнути всі</a>
+                <span class="text-muted small">@TypesHierarchyCaption</span>
+                <a asp-action="Index" asp-route-expand="true" class="tree-ctrl-btn"><i class="bi bi-plus-square"></i> @ExpandAllCaption</a>
+                <a asp-action="Index" asp-route-expand="false" class="tree-ctrl-btn"><i class="bi bi-dash-square"></i> @CollapseAllCaption</a>
             </div>
 
             <ul class="ship-tree">
@@ -93,7 +93,7 @@ else
             @if (!Model.TreeData.Any())
             {
                 <p class="text-muted text-center py-4">
-                    Немає жодного типу судна. <a asp-action="Create">Створити перший →</a>
+                    @NoTypesOfShipsMessage <a asp-action="Create">@CreateFirstCaption</a>
                 </p>
             }
         </div>

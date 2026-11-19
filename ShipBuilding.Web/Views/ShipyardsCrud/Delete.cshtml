@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.ShipyardModels.ShipyardDeletingModel
-@{ ViewData["Title"] = "Завод — видалення"; }
+@{ ViewData["Title"] = ShipyardDeleteTitle; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -9,7 +9,7 @@
     <div class="entity-card-header">
         <span class="entity-icon"><i class="bi bi-trash"></i></span>
         <div>
-            <h1>Видалення заводу</h1>
+            <h1>@DeleteShipyardHeader</h1>
             <div class="entity-subtitle">@Model.Name</div>
         </div>
     </div>
@@ -20,18 +20,18 @@
                 @TempData["error"]
             </div>
         }
-        <div class="delete-warning"><i class="bi bi-exclamation-triangle"></i> Цю дію неможливо скасувати. Запис буде видалено назавжди.</div>
+        <div class="delete-warning"><i class="bi bi-exclamation-triangle"></i> @DeleteWarningMessage</div>
 
         <div class="detail-grid">
-            <div class="detail-label">Назва</div>
+            <div class="detail-label">@NameCaption</div>
             <div class="detail-value">@Model.Name</div>
-            <div class="detail-label">Країна</div>
+            <div class="detail-label">@CountryCaption</div>
             <div class="detail-value">@(Model.CountryName ?? "—")</div>
-            <div class="detail-label">Рік заснування</div>
+            <div class="detail-label">@YearOfFoundedCaption</div>
             <div class="detail-value">@(Model.YearOfFounded?.ToString() ?? "—")</div>
-            <div class="detail-label">Кількість доків</div>
+            <div class="detail-label">@NumberOfDocksCaption</div>
             <div class="detail-value">@(Model.NumberOfDocks?.ToString() ?? "—")</div>
-            <div class="detail-label">Річна потужність</div>
+            <div class="detail-label">@CapacityPerYearCaption</div>
             <div class="detail-value">@(Model.CapacityPerYear?.ToString() ?? "—")</div>
         </div>
 
@@ -39,7 +39,7 @@
             <input type="hidden" asp-for="Id" />
             <div class="entity-actions">
                 <partial name="_ActionButton" model="ActionButtonModel.DeleteSubmit()" />
-                <a asp-action="Index" class="btn btn-outline-secondary">Скасувати</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">@CancelCaption</a>
             </div>
         </form>
     </div>

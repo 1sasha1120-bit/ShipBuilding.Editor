@@ -35,22 +35,22 @@
                 </td>
                 
                 <td>
-                    від <input asp-for="LaunchDateMin" class="form-control" /><br />
-                    до  <input asp-for="LaunchDateMax" class="form-control" />
+                    @RangeFromCaption <input asp-for="LaunchDateMin" class="form-control" /><br />
+                    @RangeToCaption <input asp-for="LaunchDateMax" class="form-control" />
                 </td>
                 <td>
                     <select asp-for="ShipyardName" class="form-select" asp-items="Model.ShipyardNamesList">
-                        <option value="">-- Всі заводи --</option>
+                        <option value="">@AllShipyardsOption</option>
                     </select>
                 </td>
                 <td>
                     <select asp-for="TypeOfShipName" class="form-select" asp-items="Model.TypeOfShipNamesList">
-                        <option value="">-- Всі типи суден --</option>
+                        <option value="">@AllTypesOfShipsOption</option>
                     </select>
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-primary">Пошук</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary">Очистити</a>
+                    <button type="submit" class="btn btn-primary">@SearchCaption</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">@ClearCaption</a>
                 </td>
                 
             </tr>

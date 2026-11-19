@@ -1,22 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static ShipBuilding.Settings.UiSettings;
 
 namespace ShipBuilding.Types
 {
     public enum ShipStatus
     {
-        [Display(Name = "Невідомо")]
+        [Display(Name = StatusUnknownCaption)]
         Unknown = 0,
 
-        [Display(Name = "В експлуатації")]
+        [Display(Name = StatusInServiceCaption)]
         InService = 1,
 
-        [Display(Name = "На ремонті")]
+        [Display(Name = StatusUnderRepairCaption)]
         UnderRepair = 2,
 
-        [Display(Name = "В резерві")]
+        [Display(Name = StatusInReserveCaption)]
         InReserve = 3,
 
-        [Display(Name = "Списано")]
+        [Display(Name = StatusDecommissionedCaption)]
         Decommissioned = 4
     }
 }

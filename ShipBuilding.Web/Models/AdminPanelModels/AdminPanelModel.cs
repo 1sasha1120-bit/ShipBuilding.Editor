@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ShipBuilding.Statistics.DataQuality;
-using static ShipBuilding.Settings.UiSettings;
+using static ShipBuilding.Web.Resources.WebTexts;
 
 namespace ShipBuilding.Web.Models.AdminPanelModels
 {

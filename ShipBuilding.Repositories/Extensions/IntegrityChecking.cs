@@ -22,8 +22,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {ShipCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(ShipCaption, obj.Name);
                 }
             }
             if (!string.IsNullOrEmpty(model.RegistrationNumber))
@@ -36,12 +35,11 @@ namespace ShipBuilding.Repositories.Extensions
                     result = false;
                     if (message == null)
                     {
-                        message = "Помилка: вже існує запис " +
-                        $"про {ShipCaption.ToLower()} з номером \"{obj.RegistrationNumber}\"";
+                        message = DuplicateRegistrationNumberMessage(ShipCaption, obj.RegistrationNumber);
                     }
                     else
                     {
-                        message += $" та номером \"{obj.RegistrationNumber}\"";
+                        message += AndRegistrationNumberMessage(obj.RegistrationNumber);
                     }
                 }
             }
@@ -64,8 +62,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {ShipCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(ShipCaption, obj.Name);
                 }
             }
             if (!string.IsNullOrEmpty(model.RegistrationNumber))
@@ -78,12 +75,11 @@ namespace ShipBuilding.Repositories.Extensions
                     result = false;
                     if (message == null)
                     {
-                        message = "Помилка: вже існує запис " +
-                        $"про {ShipCaption.ToLower()} з номером \"{obj.RegistrationNumber}\"";
+                        message = DuplicateRegistrationNumberMessage(ShipCaption, obj.RegistrationNumber);
                     }
                     else
                     {
-                        message += $" та {ShipCaption.ToLower()} з номером \"{obj.RegistrationNumber}\"";
+                        message += AndRegistrationNumberMessage(obj.RegistrationNumber);
                     }
                 }
             }
@@ -107,8 +103,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {TypeOfShipCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(TypeOfShipCaption, obj.Name);
                 }
             }
             return result;
@@ -129,8 +124,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {TypeOfShipCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(TypeOfShipCaption, obj.Name);
                 }
             }
 
@@ -154,8 +148,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (model.Parent.Id == model.Id || descendants.Contains(model.Parent.Id))
                 {
                     result = false;
-                    message = $"Помилка: неможливо призначити батьківський {TypeOfShipCaption.ToLower()}, " +
-                              "оскільки він є самим вузлом або його нащадком (цикл у ієрархії)";
+                    message = HierarchyCycleMessage(TypeOfShipCaption);
                 }
             }
 
@@ -170,22 +163,18 @@ namespace ShipBuilding.Repositories.Extensions
             if (unitOfWork.TypeOfShipsRepository.GetAll()
                     .Any(e => e.Parent?.Key == model.Key))
             {
-                message = "Видалення заборонене, оскільки " +
-                    $"для {TypeOfShipCaption.ToLower()} {model.Key} є дані про " +
-                    $"підпорядковані {TypeOfShipsHeader.ToLower()}";
+                message = DeletingForbiddenMessage(TypeOfShipCaption, model.Key, TypeOfShipsHeader);
             }
             if (unitOfWork.ShipsRepository.GetAll()
                     .Any(e => e.TypeOfShip?.Key == model.Key))
             {
                 if (message == null)
                 {
-                    message = "Видалення заборонене, оскільки " +
-                        $"для {TypeOfShipCaption.ToLower()} {model.Key} є дані про " +
-                        $"підпорядковані {ShipsHeader.ToLower()}";
+                    message = DeletingForbiddenMessage(TypeOfShipCaption, model.Key, ShipsHeader);
                 }
                 else
                 {
-                    message += $" та підпорядковані {ShipsHeader.ToLower()}";
+                    message += AndDependentMessage(ShipsHeader);
                 }
             }
             return message == null;
@@ -208,8 +197,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {ShipyardCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(ShipyardCaption, obj.Name);
                 }
             }
             return result;
@@ -231,8 +219,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {ShipyardCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(ShipyardCaption, obj.Name);
                 }
             }
             return result;
@@ -245,22 +232,18 @@ namespace ShipBuilding.Repositories.Extensions
             if (unitOfWork.ShipProjectsRepository.GetAll()
                     .Any(e => e.Shipyard?.Key == model.Key))
             {
-                message = "Видалення заборонене, оскільки " +
-                    $"для {ShipyardCaption.ToLower()} {model.Key} є дані про " +
-                    $"підпорядковані {ProjectsHeader.ToLower()}";
+                message = DeletingForbiddenMessage(ShipyardCaption, model.Key, ProjectsHeader);
             }
             if (unitOfWork.ShipsRepository.GetAll()
                     .Any(e => e.Shipyard?.Key == model.Key))
             {
                 if (message == null)
                 {
-                    message = "Видалення заборонене, оскільки " +
-                        $"для {ShipyardCaption.ToLower()} {model.Key} є дані про " +
-                        $"підпорядковані {ShipsHeader.ToLower()}";
+                    message = DeletingForbiddenMessage(ShipyardCaption, model.Key, ShipsHeader);
                 }
                 else
                 {
-                    message += $" та підпорядковані {ShipsHeader.ToLower()}";
+                    message += AndDependentMessage(ShipsHeader);
                 }
             }
             return message == null;
@@ -286,8 +269,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {ProjectCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(ProjectCaption, obj.Name);
                 }
             }
 
@@ -309,8 +291,7 @@ namespace ShipBuilding.Repositories.Extensions
                 if (obj != null)
                 {
                     result = false;
-                    message = "Помилка: вже існує запис " +
-                        $"про {ProjectCaption.ToLower()} з назвою \"{obj.Name}\"";
+                    message = DuplicateNameMessage(ProjectCaption, obj.Name);
                 }
             }
             return result;
@@ -324,9 +305,7 @@ namespace ShipBuilding.Repositories.Extensions
             if (unitOfWork.ShipsRepository.GetAll()
                     .Any(e => e.Project?.Key == model.Key))
             {
-                message = "Видалення заборонене, оскільки " +
-                    $"для {ProjectCaption.ToLower()} {model.Key} є дані про " +
-                    $"підпорядковані {ShipsHeader.ToLower()}";
+                message = DeletingForbiddenMessage(ProjectCaption, model.Key, ShipsHeader);
             }
             return message == null;
         }

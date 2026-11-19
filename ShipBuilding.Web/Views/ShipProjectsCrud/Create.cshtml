@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.ShipProjectModels.ShipProjectEditingModel
-@{ ViewData["Title"] = "Новий проєкт"; }
+@{ ViewData["Title"] = NewProjectTitle; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -9,8 +9,8 @@
     <div class="entity-card-header">
         <span class="entity-icon"><i class="fa-solid fa-compass-drafting"></i></span>
         <div>
-            <h1>Новий проєкт судна</h1>
-            <div class="entity-subtitle">Заповніть поля та збережіть</div>
+            <h1>@NewProjectHeader</h1>
+            <div class="entity-subtitle">@FillFormSubtitle</div>
         </div>
     </div>
     <div class="entity-card-body">
@@ -29,7 +29,7 @@
             <div class="mb-3">
                 <label asp-for="ShipyardName"></label>
                 <select asp-for="ShipyardName" asp-items="@Model.ShipyardSelectList" class="form-select">
-                    <option value="">— Оберіть завод —</option>
+                    <option value="">@SelectShipyardOption</option>
                 </select>
                 <span asp-validation-for="ShipyardName" class="text-danger small"></span>
             </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="entity-actions">
                 <partial name="_ActionButton" model="ActionButtonModel.CreateSubmit()" />
-                <a asp-action="Index" class="btn-back">← Назад до списку</a>
+                <a asp-action="Index" class="btn-back">@BackToListCaption</a>
             </div>
         </form>
     </div>

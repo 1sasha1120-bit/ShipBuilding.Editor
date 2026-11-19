@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.ShipModels.ShipSelectionModel
-@{ ViewData["Title"] = "Судна"; }
+@{ ViewData["Title"] = ShipsHeader; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -14,9 +14,9 @@
 }
 
 <div class="d-flex align-items-center gap-3 mb-3">
-    <h1 class="mb-0"><i class="fa-solid fa-ship"></i> Судна</h1>
+    <h1 class="mb-0"><i class="fa-solid fa-ship"></i> @ShipsHeader</h1>
     <partial name="_ActionButton" model='ActionButtonModel.CreateLink("btn-sm ms-auto")' />
-    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">← Адмін</a>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">@BackToAdminCaption</a>
 </div>
 
 <partial name="_IndexFilter" model="@Model.Filter" />
@@ -36,7 +36,7 @@
                                asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
                                asp-route-NameOrder="@Model.SortingInfo.NameOrder"
                                asp-route-sortFieldName="Name" class="text-decoration-none text-dark fw-bold">
-                            Назва <i class="bi bi-arrow-down-up"></i>
+                            @NameCaption <i class="bi bi-arrow-down-up"></i>
                         </a>
                     </th>
                     <th>
@@ -62,7 +62,7 @@
                            asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
                            asp-route-LaunchDateOrder="@Model.SortingInfo.LaunchDateOrder"
                            asp-route-sortFieldName="LaunchDate" class="text-decoration-none text-dark fw-bold">
-                            Дата спуску <i class="bi bi-arrow-down-up"></i>
+                            @ShortLaunchDateCaption <i class="bi bi-arrow-down-up"></i>
                        </a>
                     </th>
                     <th>
@@ -75,7 +75,7 @@
                            asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
                            asp-route-ShipyardNameOrder="@Model.SortingInfo.ShipyardNameOrder"
                            asp-route-sortFieldName="ShipyardName" class="text-decoration-none text-dark fw-bold">
-                            Завод <i class="bi bi-arrow-down-up"></i>
+                            @ShipyardCaption <i class="bi bi-arrow-down-up"></i>
                         </a>
                     </th>
                     <th>
@@ -88,7 +88,7 @@
                            asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
                            asp-route-TypeOfShipNameOrder="@Model.SortingInfo.TypeOfShipNameOrder"
                            asp-route-sortFieldName="TypeOfShipName" class="text-decoration-none text-dark fw-bold">
-                            Тип <i class="bi bi-arrow-down-up"></i>
+                            @ShortTypeCaption <i class="bi bi-arrow-down-up"></i>
                         </a>
                     </th>
                     <th class="col-actions-200"></th>

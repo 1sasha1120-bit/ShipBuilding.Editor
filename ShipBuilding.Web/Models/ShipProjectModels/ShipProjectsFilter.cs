@@ -11,7 +11,7 @@ namespace ShipBuilding.Web.Models.ShipProjectModels
         public string? Name { get; set; }
 
         [UIHint("text")]
-        [Display(Name = "Код проєкту")]
+        [Display(Name = ProjectCodeCaption)]
         public string? ProjectCode { get; set; }
 
         [Display(Name = ShipyardCaption)]

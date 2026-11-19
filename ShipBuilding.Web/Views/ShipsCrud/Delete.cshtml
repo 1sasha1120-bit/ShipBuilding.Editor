@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.Ships.ShipDeletingModel
-@{ ViewData["Title"] = "Судно — видалення"; }
+@{ ViewData["Title"] = ShipDeleteTitle; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -9,34 +9,34 @@
     <div class="entity-card-header">
         <span class="entity-icon"><i class="bi bi-trash"></i></span>
         <div>
-            <h1>Видалення судна</h1>
+            <h1>@DeleteShipHeader</h1>
             <div class="entity-subtitle">@Model.Name</div>
         </div>
     </div>
     <div class="entity-card-body">
-        <div class="delete-warning"><i class="bi bi-exclamation-triangle"></i> Цю дію неможливо скасувати. Запис буде видалено назавжди.</div>
+        <div class="delete-warning"><i class="bi bi-exclamation-triangle"></i> @DeleteWarningMessage</div>
 
         <div class="detail-grid">
-            <div class="detail-label">Назва</div>
+            <div class="detail-label">@NameCaption</div>
             <div class="detail-value">@Model.Name</div>
 
-            <div class="detail-label">Реєстраційний номер</div>
+            <div class="detail-label">@ShortRegistrationNumberCaption</div>
             <div class="detail-value">
                 @if (!string.IsNullOrWhiteSpace(Model.RegistrationNumber))
                 { <span class="field-badge">@Model.RegistrationNumber</span> }
                 else { <span class="text-muted">—</span> }
             </div>
 
-            <div class="detail-label">Дата спуску</div>
+            <div class="detail-label">@ShortLaunchDateCaption</div>
             <div class="detail-value">@(Model.LaunchDate?.ToString("dd.MM.yyyy") ?? "—")</div>
 
-            <div class="detail-label">Завод</div>
+            <div class="detail-label">@ShipyardCaption</div>
             <div class="detail-value">@(Model.ShipyardName ?? "—")</div>
 
-            <div class="detail-label">Тип судна</div>
+            <div class="detail-label">@TypeOfShipCaption</div>
             <div class="detail-value">@(Model.TypeOfShipName ?? "—")</div>
 
-            <div class="detail-label">Проєкт</div>
+            <div class="detail-label">@ShortProjectCaption</div>
             <div class="detail-value">@(Model.ProjectName ?? "—")</div>
         </div>
 
@@ -44,7 +44,7 @@
             <input type="hidden" asp-for="Id" />
             <div class="entity-actions">
                 <partial name="_ActionButton" model="ActionButtonModel.DeleteSubmit()" />
-                <a asp-action="Index" class="btn btn-outline-secondary">Скасувати</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">@CancelCaption</a>
             </div>
         </form>
     </div>

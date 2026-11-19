@@ -1,5 +1,5 @@
 @model ShipBuilding.Web.Models.Ships.ShipEditingModel
-@{ ViewData["Title"] = "Нове судно"; }
+@{ ViewData["Title"] = NewShipHeader; }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/entity.css" asp-append-version="true" />
@@ -9,8 +9,8 @@
     <div class="entity-card-header">
         <span class="entity-icon"><i class="bi bi-plus-lg"></i></span>
         <div>
-            <h1>Нове судно</h1>
-            <div class="entity-subtitle">Заповніть поля та збережіть</div>
+            <h1>@NewShipHeader</h1>
+            <div class="entity-subtitle">@FillFormSubtitle</div>
         </div>
     </div>
     <div class="entity-card-body">
@@ -62,28 +62,28 @@
             <div class="mb-3">
                 <label asp-for="ShipyardName"></label>
                 <select asp-for="ShipyardName" asp-items="@Model.ShipyardSelectList" class="form-select">
-                    <option value="">— Оберіть завод —</option>
+                    <option value="">@SelectShipyardOption</option>
                 </select>
                 <span asp-validation-for="ShipyardName" class="text-danger small"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="TypeOfShipName"></label>
                 <select asp-for="TypeOfShipName" asp-items="@Model.TypeOfShipSelectList" class="form-select">
-                    <option value="">— Оберіть тип —</option>
+                    <option value="">@SelectTypeOfShipOption</option>
                 </select>
                 <span asp-validation-for="TypeOfShipName" class="text-danger small"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="ProjectName"></label>
                 <select asp-for="ProjectName" asp-items="@Model.ProjectSelectList" class="form-select">
-                    <option value="">— Без проєкту —</option>
+                    <option value="">@NoProjectOption</option>
                 </select>
                 <span asp-validation-for="ProjectName" class="text-danger small"></span>
             </div>
 
             <div class="entity-actions">
                 <partial name="_ActionButton" model="ActionButtonModel.CreateSubmit()" />
-                <a asp-action="Index" class="btn-back">← Назад до списку</a>
+                <a asp-action="Index" class="btn-back">@BackToListCaption</a>
             </div>
         </form>
     </div>
