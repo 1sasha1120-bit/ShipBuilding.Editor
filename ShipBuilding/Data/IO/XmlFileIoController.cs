@@ -159,7 +159,8 @@ namespace ShipBuilding.Data.IO
             string projectCode = reader.ReadElementContentAsString();
             string description = reader.ReadElementContentAsString();
             string budgetStr = reader.ReadElementContentAsString();
-            decimal budget = string.IsNullOrEmpty(budgetStr) ? 0m : decimal.Parse(budgetStr);
+            // Порожній елемент означає «бюджету немає», а не 0
+            decimal? budget = string.IsNullOrEmpty(budgetStr) ? null : decimal.Parse(budgetStr);
             int shipyardId = reader.ReadElementContentAsInt();
             Shipyard? shipyard = dataSet.Shipyards.FirstOrDefault(e => e.Id == shipyardId);
             if (shipyard == null) return; // ShipProject requires a Shipyard

@@ -77,7 +77,8 @@ namespace ShipBuilding.Web.Models.Extensions
             
             return new ShipProject(model.Name, model.ProjectCode, model.Budget, shipyard)
             {
-                Id = model.Id
+                Id          = model.Id,
+                Description = model.Description
             };
         }
 
