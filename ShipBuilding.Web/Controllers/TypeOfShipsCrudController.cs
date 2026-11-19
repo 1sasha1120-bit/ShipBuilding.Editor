@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using ShipBuilding.Entities;
 using ShipBuilding.Repositories.Extensions;
 using ShipBuilding.Repositories.Interfaces;
@@ -21,29 +20,6 @@ namespace ShipBuilding.Web.Controllers
             _unitOfWork = unitOfWork;
             _repository = _unitOfWork.TypeOfShipsRepository;
             _objects    = _repository.GetAll();
-        }
-
-        private SelectList CreateParentSelectList(string? selectedValue = "", int? excludeId = null)
-        {
-            IEnumerable<TypeOfShip> candidates = _objects;
-
-            if (excludeId.HasValue)
-            {
-                var excluded = new HashSet<int>();
-                var queue = new Queue<int>();
-                queue.Enqueue(excludeId.Value);
-                while (queue.Count > 0)
-                {
-                    int current = queue.Dequeue();
-                    excluded.Add(current);
-                    foreach (var child in _objects.Where(e => e.Parent?.Id == current))
-                        queue.Enqueue(child.Id);
-                }
-                candidates = candidates.Where(e => !excluded.Contains(e.Id));
-            }
-
-            var names = candidates.Select(e => e.Name).OrderBy(e => e);
-            return new SelectList(names, selectedValue);
         }
 
         // ---------------------------------------------------------------------------
@@ -71,7 +47,7 @@ namespace ShipBuilding.Web.Controllers
 
         [HttpGet]
         public ActionResult Create() =>
-            View(new TypeOfShipEditingModel { ParentSelectList = CreateParentSelectList() });
+            View(new TypeOfShipEditingModel { ParentSelectList = _objects.CreateParentSelectList() });
 
         [HttpPost]
         public ActionResult Create(TypeOfShipEditingModel model)
@@ -99,7 +75,7 @@ namespace ShipBuilding.Web.Controllers
                     }
                 }
             }
-            model.ParentSelectList = CreateParentSelectList(model.ParentName);
+            model.ParentSelectList = _objects.CreateParentSelectList(model.ParentName);
             return View(model);
         }
 
@@ -111,7 +87,7 @@ namespace ShipBuilding.Web.Controllers
             var obj = _repository.GetById(id);
             if (obj == null) return NotFound();
             var model = (TypeOfShipEditingModel)obj;
-            model.ParentSelectList = CreateParentSelectList(model.ParentName, id);
+            model.ParentSelectList = _objects.CreateParentSelectList(model.ParentName, id);
             return View(model);
         }
 
@@ -141,7 +117,7 @@ namespace ShipBuilding.Web.Controllers
                     }
                 }
             }
-            model.ParentSelectList = CreateParentSelectList(model.ParentName, excludeId: model.Id);
+            model.ParentSelectList = _objects.CreateParentSelectList(model.ParentName, excludeId: model.Id);
             return View(model);
         }
 

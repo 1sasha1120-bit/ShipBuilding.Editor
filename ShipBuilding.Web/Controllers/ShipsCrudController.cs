@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using ShipBuilding.Entities;
 using ShipBuilding.Repositories.Extensions;
 using ShipBuilding.Repositories.Interfaces;
@@ -23,24 +22,6 @@ namespace ShipBuilding.Web.Controllers
             _objects = _repository.GetAll();
         }
 
-        private SelectList CreateShipyardSelectList(string? selectedValue = "")
-        {
-            IEnumerable<string?> names = _unitOfWork.ShipyardsRepository.GetAll()
-                .Select(e => e.Name).OrderBy(e => e);
-            return new SelectList(names, selectedValue);
-        }
-        private SelectList CreateTypeOfShipSelectList(string? selectedValue = "")
-        {
-            IEnumerable<string?> names = _unitOfWork.TypeOfShipsRepository.GetAll()
-                .Select(e => e.Name).OrderBy(e => e);
-            return new SelectList(names, selectedValue);
-        }
-        private SelectList CreateProjectSelectList(string? selectedValue = "")
-        {
-            IEnumerable<string?> names = _unitOfWork.ShipProjectsRepository.GetAll()
-                .Select(e => e.Name).OrderBy(e => e);
-            return new SelectList(names, selectedValue);
-        }
 
         // ---------------------------------------------------------------------------
 
@@ -49,8 +30,8 @@ namespace ShipBuilding.Web.Controllers
         {
             filter ??= new();
             sortingInfo ??= new();
-            filter.ShipyardNamesList = CreateShipyardSelectList(filter.ShipyardName);
-            filter.TypeOfShipNamesList = CreateTypeOfShipSelectList(filter.TypeOfShipName);
+            filter.ShipyardNamesList = _unitOfWork.CreateShipyardSelectList(filter.ShipyardName);
+            filter.TypeOfShipNamesList = _unitOfWork.CreateTypeOfShipSelectList(filter.TypeOfShipName);
             ShipSelectionModel model = new(filter, sortingInfo, _objects, sortFieldName);
             return View(model); 
         }
@@ -76,9 +57,9 @@ namespace ShipBuilding.Web.Controllers
         {
             var model = new ShipEditingModel
             {
-                ShipyardSelectList = CreateShipyardSelectList(),
-                TypeOfShipSelectList = CreateTypeOfShipSelectList(),
-                ProjectSelectList = CreateProjectSelectList()
+                ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(),
+                TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(),
+                ProjectSelectList = _unitOfWork.CreateProjectSelectList()
             };
             return View(model);
         }
@@ -113,9 +94,9 @@ namespace ShipBuilding.Web.Controllers
                     }
                 }
             }
-            model.ShipyardSelectList = CreateShipyardSelectList(model.ShipyardName);
-            model.TypeOfShipSelectList = CreateTypeOfShipSelectList(model.TypeOfShipName);
-            model.ProjectSelectList = CreateProjectSelectList(model.ProjectName);
+            model.ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(model.ShipyardName);
+            model.TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(model.TypeOfShipName);
+            model.ProjectSelectList = _unitOfWork.CreateProjectSelectList(model.ProjectName);
             return View(model);
         }
 
@@ -130,9 +111,9 @@ namespace ShipBuilding.Web.Controllers
                 return NotFound();
             }
             var model = (ShipEditingModel)ship;
-            model.ShipyardSelectList = CreateShipyardSelectList(model.ShipyardName);
-            model.TypeOfShipSelectList = CreateTypeOfShipSelectList(model.TypeOfShipName);
-            model.ProjectSelectList = CreateProjectSelectList(model.ProjectName);
+            model.ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(model.ShipyardName);
+            model.TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(model.TypeOfShipName);
+            model.ProjectSelectList = _unitOfWork.CreateProjectSelectList(model.ProjectName);
             return View(model);
         }
 
@@ -167,9 +148,9 @@ namespace ShipBuilding.Web.Controllers
                     }
                 }
             }
-            model.ShipyardSelectList = CreateShipyardSelectList(model.ShipyardName);
-            model.TypeOfShipSelectList = CreateTypeOfShipSelectList(model.TypeOfShipName);
-            model.ProjectSelectList = CreateProjectSelectList(model.ProjectName);
+            model.ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(model.ShipyardName);
+            model.TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(model.TypeOfShipName);
+            model.ProjectSelectList = _unitOfWork.CreateProjectSelectList(model.ProjectName);
             return View(model);
         }
 
