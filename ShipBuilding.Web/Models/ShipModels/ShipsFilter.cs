@@ -8,9 +8,11 @@ namespace ShipBuilding.Web.Models.ShipModels
 {
     public class ShipsFilter
     {
+        [UIHint("text")]
         [Display(Name = NameCaption)]
         public string? Name { get; set; }
 
+        [UIHint("text")]
         [Display(Name = RegistrationNumberCaption)]
         public string? RegistrationNumber { get; set; }
 

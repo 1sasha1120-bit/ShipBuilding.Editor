@@ -6,9 +6,11 @@ namespace ShipBuilding.Web.Models.ShipProjectModels
 {
     public class ShipProjectsFilter
     {
+        [UIHint("text")]
         [Display(Name = NameCaption)]
         public string? Name { get; set; }
 
+        [UIHint("text")]
         [Display(Name = "Код проєкту")]
         public string? ProjectCode { get; set; }
 

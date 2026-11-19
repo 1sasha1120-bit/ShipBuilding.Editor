@@ -20,13 +20,13 @@
         <tbody>
             <tr>
                 <td>
-                    <input type="text" name="Name" value="@Model.Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" />
                 </td>
                 <td>
-                    <input type="text" name="ProjectCode" value="@Model.ProjectCode" class="form-control" />
+                    <input asp-for="ProjectCode" class="form-control" />
                 </td>
                 <td>
-                    <select name="ShipyardName" class="form-select" asp-items="@Model.ShipyardNamesList">
+                    <select asp-for="ShipyardName" class="form-select" asp-items="Model.ShipyardNamesList">
                         <option value="">-- Всі заводи --</option>
                     </select>
                 </td>
