@@ -116,7 +116,7 @@
                             <div class="dash-bar-label">
                                 @if (c.Id.HasValue)
                                 {
-                                    <a asp-controller="TypeOfShipsCrud" asp-action="Details" asp-route-id="@c.Id">@c.Name</a>
+                                    <span>@c.Name</span>
                                 }
                                 else
                                 {
@@ -164,7 +164,7 @@
                     <div class="dash-highlight mt-3">
                         <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.MostExpensive)</div>
                         <div class="d-flex align-items-baseline gap-2 flex-wrap">
-                            <a asp-controller="ShipProjectsCrud" asp-action="Details" asp-route-id="@top.Id" class="fw-semibold">@top.Name</a>
+                            <span class="fw-semibold">@top.Name</span>
                             @if (!string.IsNullOrWhiteSpace(top.ProjectCode))
                             {
                                 <span class="field-badge">@top.ProjectCode</span>
@@ -198,7 +198,7 @@
                     @foreach (var y in Model.Shipyards)
                     {
                         <tr>
-                            <td><a asp-controller="ShipyardsCrud" asp-action="Details" asp-route-id="@y.Id">@y.Name</a></td>
+                            <td>@y.Name</td>
                             <td>@(y.CountryName ?? "—")</td>
                             <td class="text-end">@y.ShipsCount</td>
                             <td class="text-end">@y.ProjectsCount</td>
@@ -230,7 +230,7 @@
                     @foreach (var s in Model.LatestShips)
                     {
                         <tr>
-                            <td><a asp-controller="ShipsCrud" asp-action="Details" asp-route-id="@s.Id">@s.Name</a></td>
+                            <td>@s.Name</td>
                             <td>@(s.TypeOfShipName ?? "—")</td>
                             <td class="text-end">@s.LaunchDate?.ToString("dd.MM.yyyy")</td>
                         </tr>
@@ -264,7 +264,7 @@
                 @foreach (var p in Model.ProjectsWithoutShips)
                 {
                     <tr>
-                        <td><a asp-controller="ShipProjectsCrud" asp-action="Details" asp-route-id="@p.Id">@p.Name</a></td>
+                        <td>@p.Name</td>
                         <td>
                             @if (!string.IsNullOrWhiteSpace(p.ProjectCode))
                             { <span class="field-badge">@p.ProjectCode</span> }
