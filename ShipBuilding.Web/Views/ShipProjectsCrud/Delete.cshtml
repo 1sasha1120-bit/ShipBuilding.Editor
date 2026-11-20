@@ -1,4 +1,4 @@
-@model ShipBuilding.Web.Models.ShipProjectModels.ShipProjectBrowsingModel
+@model ShipBuilding.Web.ViewModels.ShipProjects.ShipProjectBrowsingViewModel
 @{ ViewData["Title"] = ProjectDeleteTitle; }
 
 @section Styles {
@@ -38,7 +38,7 @@
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <div class="entity-actions">
-                <partial name="_ActionButton" model="ActionButtonModel.DeleteSubmit()" />
+                <partial name="_ActionButton" model="ActionButtonViewModel.DeleteSubmit()" />
                 <a asp-action="Index" class="btn btn-outline-secondary">@CancelCaption</a>
             </div>
         </form>

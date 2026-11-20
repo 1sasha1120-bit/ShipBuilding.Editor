@@ -1,4 +1,4 @@
-@model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipSelectionModel
+@model ShipBuilding.Web.ViewModels.TypeOfShips.TypeOfShipSelectionViewModel
 @{ ViewData["Title"] = TypeOfShipsHeader; }
 
 @section Styles {
@@ -23,7 +23,7 @@
 
 <div class="d-flex align-items-center gap-3 mb-3">
     <h1 class="mb-0"><i class="fa-solid fa-sitemap"></i> @TypeOfShipsHeader</h1>
-    <partial name="_ActionButton" model='ActionButtonModel.CreateLink("btn-sm ms-auto")' />
+    <partial name="_ActionButton" model='ActionButtonViewModel.CreateLink("btn-sm ms-auto")' />
     <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">@BackToAdminCaption</a>
 </div>
 

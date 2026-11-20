@@ -1,4 +1,4 @@
-@model ShipBuilding.Web.Models.Ships.ShipDeletingModel
+@model ShipBuilding.Web.ViewModels.Ships.ShipDeletingViewModel
 @{ ViewData["Title"] = ShipDeleteTitle; }
 
 @section Styles {
@@ -14,6 +14,12 @@
         </div>
     </div>
     <div class="entity-card-body">
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["error"]
+            </div>
+        }
         <div class="delete-warning"><i class="bi bi-exclamation-triangle"></i> @DeleteWarningMessage</div>
 
         <div class="detail-grid">
@@ -43,7 +49,7 @@
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <div class="entity-actions">
-                <partial name="_ActionButton" model="ActionButtonModel.DeleteSubmit()" />
+                <partial name="_ActionButton" model="ActionButtonViewModel.DeleteSubmit()" />
                 <a asp-action="Index" class="btn btn-outline-secondary">@CancelCaption</a>
             </div>
         </form>

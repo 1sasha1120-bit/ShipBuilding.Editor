@@ -1,16 +1,14 @@
-using ShipBuilding.Repositories;
-using ShipBuilding.Repositories.Interfaces;
-using ShipBuilding.Web.Services;
+using ShipBuilding.Services;
 
 namespace ShipBuilding.Web
 {
     public class Program
     {
         public static void Main(string[] args)
-       {
+        {
             var builder = WebApplication.CreateBuilder(args);
 
-            RegisterUoW(builder);
+            RegisterServices(builder);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -41,14 +39,19 @@ namespace ShipBuilding.Web
             app.Run();
         }
 
-        private static void RegisterUoW(WebApplicationBuilder builder)
+        private static void RegisterServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddSingleton<DataInitializer>();
-            builder.Services.AddSingleton<IUnitOfWork>(sp => {
-                var initializer = sp.GetRequiredService<DataInitializer>();
-                return initializer.CreateUnitOfWork();
-            });
-            builder.Services.AddTransient<IStatisticsRepository, StatisticsRepository>();
+            // Файл даних лежить поза wwwroot, щоб його не віддавав UseStaticFiles
+            string dataFolder = Path.Combine(builder.Environment.ContentRootPath,
+                builder.Configuration["Storage:DataFolder"] ?? "App_Data");
+
+            // У режимі розробки порожнє сховище заповнюється тестовими даними
+            builder.Services.AddShipBuildingServices(dataFolder,
+                seedTestData: builder.Environment.IsDevelopment());
+
+            // Перетворення між даними сервісів і view-моделями: профілі в ViewModels/<Сутність>/…Profile.cs.
+            // Ключ ліцензії (cfg.LicenseKey) поки не задано — AutoMapper лише пише попередження в лог
+            builder.Services.AddAutoMapper(cfg => { }, typeof(Program));
         }
     }
 }

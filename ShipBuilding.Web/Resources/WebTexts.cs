@@ -2,11 +2,6 @@
 
 namespace ShipBuilding.Web.Resources
 {
-    /// <summary>
-    /// Написи веб-інтерфейсу: заголовки сторінок, кнопки, підписи колонок,
-    /// пункти випадаючих списків та повідомлення про порожні дані.
-    /// Спільні для всіх проєктів назви сутностей і атрибутів — у ShipBuilding.Settings.UiSettings.
-    /// </summary>
     public static class WebTexts
     {
         // Головна сторінка (dashboard)
@@ -21,24 +16,15 @@ namespace ShipBuilding.Web.Resources
         public const string BackToHomeCaption = "← Головна";
         public const string NoRecordsMessage = "Записів ще немає";
 
-        // Пагінація
-        public const string PaginationCaption = "Сторінки";
-        public const string PreviousPageCaption = "Попередня сторінка";
-        public const string NextPageCaption = "Наступна сторінка";
-        public const string ShownRecordsFormat = "Записи {0}–{1} з {2}";
-
         // Адмін панель
         public const string AdminPanelCaption = "Адмін панель";
         public const string AdminPanelSubtitle = "Редагування довідників і реєстрів";
         public const string HomePageCaption = "Головна";
         public const string OpenListCaption = "Відкрити";
-        public const string RecordsCountCaption = "Записів";
         public const string TypeOfShipsDescription = "Ієрархія та класифікація";
         public const string ShipyardsDescription = "Суднобудівні підприємства";
         public const string ProjectsDescription = "Проєкти суден і бюджети";
         public const string ShipsDescription = "Реєстр суден";
-        public const string IncompleteRecordsHeader = "Потребують заповнення";
-        public const string AllRecordsCompleteMessage = "Усі записи заповнені";
 
         // Додаткові назви сутностей
         public const string ShortProjectCaption = "Проєкт";

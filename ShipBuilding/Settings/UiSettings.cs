@@ -48,8 +48,6 @@
         public const string ShipsByStatusHeader = "Судна за статусом";
         public const string TopShipyardsHeader = "Найбільші заводи";
         public const string LatestShipsHeader = "Останні спущені на воду";
-        public const string CountCaption = "Кількість";
-        public const string PercentCaption = "Частка, %";
         public const string CountryCaption = "Країна";
         public const string ShipsCountCaption = "Суден";
         public const string ProjectsCountCaption = "Проєктів";
@@ -64,14 +62,6 @@
         // — проєкти без суден
         public const string ProjectsWithoutShipsHeader = "Проєкти без суден";
         public const string ProjectCodeCaption = "Код проєкту";
-        // — судна за категоріями (типи верхнього рівня)
-        public const string ShipsByCategoryHeader = "Судна за категоріями";
-        public const string CategoryCaption = "Категорія";
-        public const string WithoutTypeCaption = "Без типу";
-
-        // Дані про якість записів (адмін панель)
-        public const string EntityCaption = "Розділ";
-        public const string MissingFieldsCaption = "Не заповнено";
 
         // Налаштування інформації про засоби введення-виведення
         public const string XmlFileTypeCaption = "Файли формату XML";

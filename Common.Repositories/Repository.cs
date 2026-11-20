@@ -9,7 +9,7 @@ namespace Common.Repositories
     public class Repository<T> : IRepository<T>
             where T : class, IIdentifiable {
 
-        protected ICollection<T> Collection { get; } // internal
+        protected ICollection<T> Collection { get; }
 
         public Repository(ICollection<T> collection) {
             //
@@ -20,13 +20,9 @@ namespace Common.Repositories
             return Collection;
         }
 
-        public virtual T GetById(int id) {
-            var item = Collection.FirstOrDefault(e => e.Id == id);
-            if (item == null)
-            {
-                throw new KeyNotFoundException($"No {typeof(T).Name} with Id {id} was found in the repository.");
-            }
-            return item;
+        /// <summary>Запис за ідентифікатором або null, якщо його немає.</summary>
+        public virtual T? GetById(int id) {
+            return Collection.FirstOrDefault(e => e.Id == id);
         }
 
         public virtual void Add(T item) {
@@ -37,7 +33,7 @@ namespace Common.Repositories
         public virtual void Update(T item) {
             //throw new NotImplementedException();
             //throw new NotSupportedException();
-            T currentItem = GetById(item.Id);
+            T? currentItem = GetById(item.Id);
             if (currentItem != null) {
                 Type type = item.GetType();
                 foreach (var prop in type.GetProperties()) {
@@ -50,7 +46,7 @@ namespace Common.Repositories
         }
 
         public virtual void Delete(int id) {
-            T item = GetById(id);
+            T? item = GetById(id);
             if (item != null)
                 Collection.Remove(item);
         }

@@ -1,9 +1,9 @@
+using AutoMapper;
+using Common.Types;
 using Microsoft.AspNetCore.Mvc;
-using ShipBuilding.Entities;
-using ShipBuilding.Repositories.Extensions;
-using ShipBuilding.Repositories.Interfaces;
-using ShipBuilding.Web.Models.Extensions;
-using ShipBuilding.Web.Models.ShipyardModels;
+using ShipBuilding.Services.Interfaces;
+using ShipBuilding.Services.Shipyards;
+using ShipBuilding.Web.ViewModels.Shipyards;
 using static ShipBuilding.Settings.UiSettings;
 using static ShipBuilding.Web.Resources.WebMessages;
 
@@ -11,26 +11,24 @@ namespace ShipBuilding.Web.Controllers
 {
     public class ShipyardsCrudController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IShipyardsRepository _repository;
-        private readonly IEnumerable<Shipyard> _objects;
+        private readonly IShipyardsService _shipyards;
+        private readonly IMapper _mapper;
 
-        public ShipyardsCrudController(IUnitOfWork unitOfWork)
+        public ShipyardsCrudController(IShipyardsService shipyards, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _repository = _unitOfWork.ShipyardsRepository;
-            _objects = _repository.GetAll();
+            _shipyards = shipyards;
+            _mapper = mapper;
         }
 
         // ---------------------------------------------------------------------------
 
         public IActionResult Index(ShipyardsFilter filter,
-            ShipyardsSortingInfo sortingInfo, string? sortFieldName)
+            ShipyardSortField sortBy = ShipyardSortField.Name, SortingOrder order = SortingOrder.Ascending)
         {
-            filter      ??= new();
-            sortingInfo ??= new();
-            var model = new ShipyardSelectionModel(filter, sortingInfo, _objects, sortFieldName);
-            return View(model);
+            filter ??= new();
+            var query = _mapper.Map<ShipyardsQuery>(filter) with { SortBy = sortBy, Order = order };
+            var shipyards = _mapper.Map<List<ShipyardBrowsingViewModel>>(_shipyards.GetList(query));
+            return View(new ShipyardSelectionViewModel(filter, sortBy, order, shipyards));
         }
 
         // ---------------------------------------------------------------------------
@@ -38,42 +36,28 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
-            var obj = _repository.GetById(id);
+            var obj = _shipyards.GetById(id);
             if (obj == null) return NotFound();
 
-            return View((ShipyardEditingModel)obj);
+            return View(_mapper.Map<ShipyardEditingViewModel>(obj));
         }
 
         // ---------------------------------------------------------------------------
 
         [HttpGet]
-        public ActionResult Create() => View(new ShipyardEditingModel());
+        public ActionResult Create() => View(new ShipyardEditingViewModel());
 
         [HttpPost]
-        public ActionResult Create(ShipyardEditingModel model)
+        public ActionResult Create(ShipyardEditingViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var obj = model.ToShipyard();
-                if (!obj.CheckCreation(_unitOfWork, out string? message))
+                if (_shipyards.Create(_mapper.Map<ShipyardDto>(model), out string? message))
                 {
-                    ModelState.AddModelError("", message!);
+                    TempData["message"] = $"{DateMessageTemplate} {ShipyardCaption.ToLower()} \"{model.Name}\" {CreatedMessageTemplate}";
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    try
-                    {
-                        _repository.Add(obj);
-                        _unitOfWork.Save();
-                        TempData["message"] = CreatedMessage(ShipyardCaption, obj.Key);
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("",
-                            CreatingErrorMessage(ShipyardCaption, ex.Message));
-                    }
-                }
+                ModelState.AddModelError("", message!);
             }
             return View(model);
         }
@@ -83,36 +67,22 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var obj = _repository.GetById(id);
+            var obj = _shipyards.GetById(id);
             if (obj == null) return NotFound();
-            return View((ShipyardEditingModel)obj);
+            return View(_mapper.Map<ShipyardEditingViewModel>(obj));
         }
 
         [HttpPost]
-        public ActionResult Edit(ShipyardEditingModel model)
+        public ActionResult Edit(ShipyardEditingViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var obj = model.ToShipyard();
-                if (!obj.CheckUpdating(_unitOfWork, out string? message))
+                if (_shipyards.Update(_mapper.Map<ShipyardDto>(model), out string? message))
                 {
-                    ModelState.AddModelError("", message!);
+                    TempData["message"] = $"{DateMessageTemplate} {ShipyardCaption.ToLower()} \"{model.Name}\" {UpdatedMessageTemplate}";
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    try
-                    {
-                        _repository.Update(obj);
-                        _unitOfWork.Save();
-                        TempData["message"] = UpdatedMessage(ShipyardCaption, obj.Key);
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("",
-                            UpdatingErrorMessage(ShipyardCaption, ex.Message));
-                    }
-                }
+                ModelState.AddModelError("", message!);
             }
             return View(model);
         }
@@ -122,30 +92,28 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var obj = _objects.FirstOrDefault(e => e.Id == id);
+            var obj = _shipyards.GetById(id);
             if (obj == null) return NotFound();
-            return View(obj.ToDeletingModel());
+            return View(_mapper.Map<ShipyardDeletingViewModel>(obj));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(ShipyardDeletingModel model)
+        public ActionResult Delete(ShipyardDeletingViewModel model)
         {
-            var obj = _objects.FirstOrDefault(e => e.Id == model.Id);
+            var obj = _shipyards.GetById(model.Id);
             if (obj == null)
             {
                 TempData["message"] = NotFoundMessage(ShipyardCaption, model.Id);
             }
+            else if (!_shipyards.Delete(model.Id, out string? message))
+            {
+                TempData["error"] = message;
+                return RedirectToAction("Delete", new { id = model.Id });
+            }
             else
             {
-                if (!obj.CheckDeleting(_unitOfWork, out string? message))
-                {
-                    TempData["error"] = message;
-                    return RedirectToAction("Delete", new { id = model.Id });
-                }
-                _repository.Delete(model.Id);
-                _unitOfWork.Save();
-                TempData["message"] = DeletedMessage(ShipyardCaption, obj.Key);
+                TempData["message"] = $"{DateMessageTemplate} {ShipyardCaption.ToLower()} \"{obj.Key}\" {DeletedMessageTemplate}";
             }
             return RedirectToAction("Index");
         }

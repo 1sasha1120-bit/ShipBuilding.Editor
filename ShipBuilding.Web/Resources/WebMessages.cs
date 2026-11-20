@@ -17,27 +17,8 @@
         public const string CreatedMessageTemplate = "додано";
         public const string UpdatedMessageTemplate = "змінено";
         public const string DeletedMessageTemplate = "видалено";
-        public const string NotFoundMessageTemplate = "відсутні у сховищі";
         public const string CreatingErrorMessageTemplate = "Помилка створення запису про";
         public const string UpdatingErrorMessageTemplate = "Помилка редагування запису про";
         public const string DateMessageTemplate = "Дані про";
-
-        public static string CreatedMessage(string entityCaption, string? key) =>
-            $"{DateMessageTemplate} {entityCaption.ToLower()} \"{key}\" {CreatedMessageTemplate}";
-
-        public static string UpdatedMessage(string entityCaption, string? key) =>
-            $"{DateMessageTemplate} {entityCaption.ToLower()} \"{key}\" {UpdatedMessageTemplate}";
-
-        public static string DeletedMessage(string entityCaption, string? key) =>
-            $"{DateMessageTemplate} {entityCaption.ToLower()} \"{key}\" {DeletedMessageTemplate}";
-
-        public static string NotFoundMessage(string entityCaption, object? id) =>
-            $"{DateMessageTemplate} {entityCaption.ToLower()} \"{id}\" {NotFoundMessageTemplate}";
-
-        public static string CreatingErrorMessage(string entityCaption, string error) =>
-            $"{CreatingErrorMessageTemplate} {entityCaption.ToLower()}: {error}";
-
-        public static string UpdatingErrorMessage(string entityCaption, string error) =>
-            $"{UpdatingErrorMessageTemplate} {entityCaption.ToLower()}: {error}";
     }
 }

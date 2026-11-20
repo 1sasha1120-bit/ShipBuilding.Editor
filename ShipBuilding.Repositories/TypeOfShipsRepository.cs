@@ -16,7 +16,7 @@ namespace ShipBuilding.Repositories
         }
         public override void Update(TypeOfShip item)
         {
-            TypeOfShip obj = GetById(item.Id);
+            TypeOfShip? obj = GetById(item.Id);
             if (obj != null)
             {
                 obj.Name = item.Name;

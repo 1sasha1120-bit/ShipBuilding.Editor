@@ -1,4 +1,4 @@
-@model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipEditingModel
+@model ShipBuilding.Web.ViewModels.TypeOfShips.TypeOfShipEditingViewModel
 @{ ViewData["Title"] = TypeOfShipEditTitle; }
 
 @section Styles {
@@ -42,7 +42,7 @@
             </div>
 
             <div class="entity-actions">
-                <partial name="_ActionButton" model="ActionButtonModel.SaveSubmit()" />
+                <partial name="_ActionButton" model="ActionButtonViewModel.SaveSubmit()" />
                 <a asp-action="Index" class="btn-back">@BackToListCaption</a>
             </div>
         </form>

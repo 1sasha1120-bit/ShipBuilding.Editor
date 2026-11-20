@@ -1,5 +1,5 @@
 @using ShipBuilding.Types.Extensions;
-@model ShipBuilding.Web.Models.Ships.ShipEditingModel
+@model ShipBuilding.Web.ViewModels.Ships.ShipEditingViewModel
 @{ ViewData["Title"] = ShipDetailsTitle; }
 
 @section Styles {
@@ -38,7 +38,7 @@
                     int sVal = (int)Model.Status;
                     string sColor = statusColors.ContainsKey(sVal) ? statusColors[sVal] : "secondary";
                 }
-                <span class="badge bg-@sColor text-@(sColor == "light" ? "dark" : "white") fs-6">@Model.Status.GetDisplayName()</span>
+                <span class="badge bg-@sColor text-@(sColor == "light" ? "dark" : "white") fs-6">@TypesMethods.GetDisplayName(Model.Status)</span>
             </div>
 
             <div class="detail-label">@HeightCaption</div>
@@ -61,8 +61,8 @@
         </div>
 
         <div class="entity-actions">
-            <partial name="_ActionButton" model="ActionButtonModel.EditLink(Model.Id)" />
-            <partial name="_ActionButton" model="ActionButtonModel.DeleteLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonViewModel.EditLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonViewModel.DeleteLink(Model.Id)" />
             <a asp-action="Index" class="btn-back">@BackToListCaption</a>
         </div>
     </div>

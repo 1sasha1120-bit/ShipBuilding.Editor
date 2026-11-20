@@ -1,17 +1,6 @@
-﻿@using ShipBuilding.Types
-@using ShipBuilding.Types.Extensions
-@model ShipBuilding.Statistics.Dashboard.DashboardModel
+﻿@model ShipBuilding.Web.ViewModels.Home.DashboardViewModel
 @{
     ViewData["Title"] = HomePageTitle;
-
-    static string StatusColor(ShipStatus status) => status switch
-    {
-        ShipStatus.InService      => "success",
-        ShipStatus.UnderRepair    => "warning",
-        ShipStatus.InReserve      => "secondary",
-        ShipStatus.Decommissioned => "danger",
-        _                         => "light"
-    };
 
     static string Money(decimal value) =>
         value.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
@@ -77,17 +66,17 @@
             <div class="progress dash-status-bar mb-3">
                 @foreach (var s in Model.ShipsByStatus)
                 {
-                    <div class="progress-bar bg-@StatusColor(s.Status)"
+                    <div class="progress-bar bg-@s.Color"
                          style="width:@s.Percent.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)%"
-                         title="@s.Status.GetDisplayName(): @s.Count"></div>
+                         title="@s.Name: @s.Count"></div>
                 }
             </div>
             <div class="dash-status-legend">
                 @foreach (var s in Model.ShipsByStatus)
                 {
                     <div class="dash-status-item">
-                        <span class="dash-dot bg-@StatusColor(s.Status)"></span>
-                        <span>@s.Status.GetDisplayName()</span>
+                        <span class="dash-dot bg-@s.Color"></span>
+                        <span>@s.Name</span>
                         <strong>@s.Count</strong>
                         <span class="text-muted">(@s.Percent.ToString("F0")%)</span>
                     </div>
@@ -100,46 +89,10 @@
 <div class="dash-columns mb-4">
     <div class="entity-card">
         <div class="entity-card-header">
-            <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.ShipsByCategory)</h2>
-        </div>
-        <div class="entity-card-body">
-            @if (Model.ShipsByCategory.Count == 0)
-            {
-                <p class="text-muted mb-0">@NoShipsMessage</p>
-            }
-            else
-            {
-                <div class="dash-bars">
-                    @foreach (var c in Model.ShipsByCategory)
-                    {
-                        <div class="dash-bar-row">
-                            <div class="dash-bar-label">
-                                @if (c.Id.HasValue)
-                                {
-                                    <span>@c.Name</span>
-                                }
-                                else
-                                {
-                                    <span class="text-muted">@c.Name</span>
-                                }
-                            </div>
-                            <div class="dash-bar-track">
-                                <div class="dash-bar-fill" style="width:@c.Percent.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)%"></div>
-                            </div>
-                            <div class="dash-bar-value">@c.Count</div>
-                        </div>
-                    }
-                </div>
-            }
-        </div>
-    </div>
-
-    <div class="entity-card">
-        <div class="entity-card-header">
             <h2 class="dash-card-title">@Html.DisplayNameFor(m => m.Budget)</h2>
         </div>
         <div class="entity-card-body">
-            @if (Model.Budget is null)
+            @if (Model.Budget is not { } budget)
             {
                 <p class="text-muted mb-0">@NoBudgetsMessage</p>
             }
@@ -147,19 +100,19 @@
             {
                 <div class="dash-kpis">
                     <div>
-                        <div class="dash-kpi-value">@Money(Model.Budget.Total)</div>
+                        <div class="dash-kpi-value">@Money(budget.Total)</div>
                         <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.Total)</div>
                     </div>
                     <div>
-                        <div class="dash-kpi-value">@Money(Model.Budget.Average)</div>
+                        <div class="dash-kpi-value">@Money(budget.Average)</div>
                         <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.Average)</div>
                     </div>
                     <div>
-                        <div class="dash-kpi-value">@Model.Budget.ProjectsWithBudget <span class="text-muted fs-6">/ @Model.ProjectsCount</span></div>
+                        <div class="dash-kpi-value">@budget.ProjectsWithBudget <span class="text-muted fs-6">/ @Model.ProjectsCount</span></div>
                         <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.ProjectsWithBudget)</div>
                     </div>
                 </div>
-                @if (Model.Budget.MostExpensive is { } top)
+                @if (budget.MostExpensive is { } top)
                 {
                     <div class="dash-highlight mt-3">
                         <div class="dash-stat-label">@Html.DisplayNameFor(m => m.Budget!.MostExpensive)</div>

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShipBuilding.Entities;
-using ShipBuilding.Repositories.Extensions;
-using ShipBuilding.Repositories.Interfaces;
-using ShipBuilding.Web.Models.Extensions;
-using ShipBuilding.Web.Models.ShipModels;
-using ShipBuilding.Web.Models.Ships;
+using AutoMapper;
+using Common.Types;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ShipBuilding.Services.Interfaces;
+using ShipBuilding.Services.Ships;
+using ShipBuilding.Web.ViewModels.Ships;
 using static ShipBuilding.Settings.UiSettings;
 using static ShipBuilding.Web.Resources.WebMessages;
 
@@ -12,29 +12,36 @@ namespace ShipBuilding.Web.Controllers
 {
     public class ShipsCrudController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IShipsRepository _repository;
-        private readonly IEnumerable<Ship> _objects;
+        private readonly IShipsService _ships;
 
-        public ShipsCrudController(IUnitOfWork unitOfWork)
+        // Для випадних списків верфей, типів і проєктів
+        private readonly IShipyardsService _shipyards;
+        private readonly ITypeOfShipsService _types;
+        private readonly IShipProjectsService _projects;
+
+        private readonly IMapper _mapper;
+
+        public ShipsCrudController(IShipsService ships, IShipyardsService shipyards,
+            ITypeOfShipsService types, IShipProjectsService projects, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _repository = _unitOfWork.ShipsRepository;
-            _objects = _repository.GetAll();
+            _ships = ships;
+            _shipyards = shipyards;
+            _types = types;
+            _projects = projects;
+            _mapper = mapper;
         }
-
 
         // ---------------------------------------------------------------------------
 
         public IActionResult Index(ShipsFilter filter,
-            ShipsSortingInfo sortingInfo, string sortFieldName)
+            ShipSortField sortBy = ShipSortField.Name, SortingOrder order = SortingOrder.Ascending)
         {
             filter ??= new();
-            sortingInfo ??= new();
-            filter.ShipyardNamesList = _unitOfWork.CreateShipyardSelectList(filter.ShipyardName);
-            filter.TypeOfShipNamesList = _unitOfWork.CreateTypeOfShipSelectList(filter.TypeOfShipName);
-            ShipSelectionModel model = new(filter, sortingInfo, _objects, sortFieldName);
-            return View(model); 
+            filter.ShipyardNamesList = new SelectList(_shipyards.GetNames(), filter.ShipyardName);
+            filter.TypeOfShipNamesList = new SelectList(_types.GetNames(), filter.TypeOfShipName);
+            var query = _mapper.Map<ShipsQuery>(filter) with { SortBy = sortBy, Order = order };
+            var ships = _mapper.Map<List<ShipBrowsingViewModel>>(_ships.GetList(query));
+            return View(new ShipSelectionViewModel(filter, sortBy, order, ships));
         }
 
         // ---------------------------------------------------------------------------
@@ -42,63 +49,30 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            Ship ship = _repository.GetById(id);
-            if (ship == null)
-            {
-                return NotFound(); 
-            }
-            ShipEditingModel model = (ShipEditingModel)ship;
-            return View(model);
+            var ship = _ships.GetById(id);
+            if (ship == null) return NotFound();
+
+            return View(_mapper.Map<ShipEditingViewModel>(ship));
         }
 
         // ---------------------------------------------------------------------------
 
         [HttpGet]
-        public IActionResult Create()
-        {
-            var model = new ShipEditingModel
-            {
-                ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(),
-                TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(),
-                ProjectSelectList = _unitOfWork.CreateProjectSelectList()
-            };
-            return View(model);
-        }
+        public IActionResult Create() => View(FillSelectLists(new ShipEditingViewModel()));
 
         [HttpPost]
-        public IActionResult Create(ShipEditingModel model)
+        public IActionResult Create(ShipEditingViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var obj = model.ToShip(
-                            _unitOfWork.ShipyardsRepository.GetAll(),
-                            _unitOfWork.TypeOfShipsRepository.GetAll(),
-                            _unitOfWork.ShipProjectsRepository.GetAll());
-                if (!obj.CheckCreation(_unitOfWork, out string? message))
+                if (_ships.Create(_mapper.Map<ShipDto>(model), out string? message))
                 {
-                    ModelState.AddModelError("", message!);
+                    TempData["message"] = $"{DateMessageTemplate} {ShipCaption.ToLower()} \"{model.Name}\" {CreatedMessageTemplate}";
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    try
-                    {
-                        _repository.Add(obj);
-                        _unitOfWork.Save();
-
-                        TempData["message"] = CreatedMessage(ShipCaption, obj.Key);
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("",
-                            CreatingErrorMessage(ShipCaption, ex.Message));
-                    }
-                }
+                ModelState.AddModelError("", message!);
             }
-            model.ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(model.ShipyardName);
-            model.TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(model.TypeOfShipName);
-            model.ProjectSelectList = _unitOfWork.CreateProjectSelectList(model.ProjectName);
-            return View(model);
+            return View(FillSelectLists(model));
         }
 
         // ---------------------------------------------------------------------------
@@ -106,53 +80,25 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            Ship? ship = _repository.GetById(id);
-            if (ship == null)
-            {
-                return NotFound();
-            }
-            var model = (ShipEditingModel)ship;
-            model.ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(model.ShipyardName);
-            model.TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(model.TypeOfShipName);
-            model.ProjectSelectList = _unitOfWork.CreateProjectSelectList(model.ProjectName);
-            return View(model);
+            var ship = _ships.GetById(id);
+            if (ship == null) return NotFound();
+
+            return View(FillSelectLists(_mapper.Map<ShipEditingViewModel>(ship)));
         }
 
         [HttpPost]
-        public IActionResult Edit(ShipEditingModel model)
+        public IActionResult Edit(ShipEditingViewModel model)
         {
-            Ship? obj;
             if (ModelState.IsValid)
             {
-                obj = model.ToShip(
-                            _unitOfWork.ShipyardsRepository.GetAll(),
-                            _unitOfWork.TypeOfShipsRepository.GetAll(),
-                            _unitOfWork.ShipProjectsRepository.GetAll());
-                if (!obj.CheckUpdating(_unitOfWork, out string message))
+                if (_ships.Update(_mapper.Map<ShipDto>(model), out string? message))
                 {
-                    ModelState.AddModelError("", message);
+                    TempData["message"] = $"{DateMessageTemplate} {ShipCaption.ToLower()} \"{model.Name}\" {UpdatedMessageTemplate}";
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    try
-                    {
-                        _repository.Update(obj);
-                        _unitOfWork.Save();
-
-                        TempData["message"] = UpdatedMessage(ShipCaption, obj.Key);
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("",
-                            UpdatingErrorMessage(ShipCaption, ex.Message));
-                    }
-                }
+                ModelState.AddModelError("", message!);
             }
-            model.ShipyardSelectList = _unitOfWork.CreateShipyardSelectList(model.ShipyardName);
-            model.TypeOfShipSelectList = _unitOfWork.CreateTypeOfShipSelectList(model.TypeOfShipName);
-            model.ProjectSelectList = _unitOfWork.CreateProjectSelectList(model.ProjectName);
-            return View(model);
+            return View(FillSelectLists(model));
         }
 
         // ---------------------------------------------------------------------------
@@ -160,31 +106,41 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            Ship? obj = _objects.FirstOrDefault(e => e.Id == id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            var model = obj.ToDeletingModel();
-            return View(model);
+            var ship = _ships.GetById(id);
+            if (ship == null) return NotFound();
+
+            return View(_mapper.Map<ShipDeletingViewModel>(ship));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken] // для захисту від CSRF-атак
-        public IActionResult Delete(ShipDeletingModel model)
+        public IActionResult Delete(ShipDeletingViewModel model)
         {
-            var obj = _objects.FirstOrDefault(e => e.Id == model.Id);
+            var obj = _ships.GetById(model.Id);
             if (obj == null)
             {
                 TempData["message"] = NotFoundMessage(ShipCaption, model.Id);
             }
+            else if (!_ships.Delete(model.Id, out string? message))
+            {
+                TempData["error"] = message;
+                return RedirectToAction("Delete", new { id = model.Id });
+            }
             else
             {
-                _repository.Delete(model.Id);
-                _unitOfWork.Save();
-                TempData["message"] = DeletedMessage(ShipCaption, obj.Key);
+                TempData["message"] = $"{DateMessageTemplate} {ShipCaption.ToLower()} \"{obj.Key}\" {DeletedMessageTemplate}";
             }
             return RedirectToAction("Index");
+        }
+
+        // ---------------------------------------------------------------------------
+
+        private ShipEditingViewModel FillSelectLists(ShipEditingViewModel model)
+        {
+            model.ShipyardSelectList = new SelectList(_shipyards.GetNames(), model.ShipyardName);
+            model.TypeOfShipSelectList = new SelectList(_types.GetNames(), model.TypeOfShipName);
+            model.ProjectSelectList = new SelectList(_projects.GetNames(), model.ProjectName);
+            return model;
         }
     }
 }

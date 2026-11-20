@@ -9,11 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common.Data\Common.Data.csproj" />
     <ProjectReference Include="..\Common.Repositories\Common.Repositories.csproj" />
-    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\ShipBuilding\ShipBuilding.csproj" />
-    <!-- PrivateAssets="all": Analysis — внутрішня деталь реалізації, проєкти, що посилаються
-         на Repositories (зокрема Web), не бачать її типів під час компіляції -->
-    <ProjectReference Include="..\ShipBuilding.Analysis\ShipBuilding.Analysis.csproj" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

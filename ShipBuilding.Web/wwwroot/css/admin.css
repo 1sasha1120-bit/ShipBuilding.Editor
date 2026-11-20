@@ -43,8 +43,6 @@
 }
 .admin-tile-title { font-weight: 700; font-size: 1.05rem; }
 .admin-tile-sub { font-size: .8rem; color: #6c757d; margin-top: 2px; }
-.admin-tile-count { margin-top: 10px; font-size: .85rem; color: #6c757d; }
-.admin-tile-count strong { font-size: 1.4rem; color: #212529; }
 .admin-tile-actions {
     display: flex;
     gap: 8px;
@@ -54,21 +52,3 @@
     background: #fcfcfd;
 }
 .admin-tile-actions .btn { border-radius: 8px; }
-
-/* Incomplete records */
-.admin-card-title {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #212529;
-}
-.admin-missing {
-    display: inline-block;
-    margin: 2px 4px 2px 0;
-    padding: 1px 8px;
-    border-radius: 6px;
-    font-size: .8rem;
-    background: #fff3cd;
-    color: #664d03;
-    border: 1px solid #ffe69c;
-}

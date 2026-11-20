@@ -1,4 +1,4 @@
-@model PagedList<ShipBuilding.Web.Models.ShipyardModels.ShipyardBrowsingModel>
+@model IReadOnlyList<ShipBuilding.Web.ViewModels.Shipyards.ShipyardBrowsingViewModel>
 @{ ViewData["Title"] = FullShipyardsHeader; }
 
 @section Styles {
@@ -18,15 +18,15 @@
         <table class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].Name)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].CountryName)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].YearOfFounded)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].NumberOfDocks)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].CapacityPerYear)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].Name)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].CountryName)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].YearOfFounded)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].NumberOfDocks)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].CapacityPerYear)</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Items)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td class="fw-medium">@item.Name</td>
@@ -36,7 +36,7 @@
                         <td>@(item.CapacityPerYear.HasValue ? item.CapacityPerYear.Value.ToString("N0") + " " + TonnesUnit : "—")</td>
                     </tr>
                 }
-                @if (Model.Items.Count == 0)
+                @if (Model.Count == 0)
                 {
                     <tr><td colspan="5" class="text-center text-muted py-4">@NoShipyardsMessage</td></tr>
                 }
@@ -45,4 +45,3 @@
     </div>
 </div>
 
-<partial name="_Pager" model="Model.Paging" />

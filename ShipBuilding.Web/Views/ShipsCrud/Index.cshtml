@@ -1,4 +1,4 @@
-@model ShipBuilding.Web.Models.ShipModels.ShipSelectionModel
+@model ShipBuilding.Web.ViewModels.Ships.ShipSelectionViewModel
 @{ ViewData["Title"] = ShipsHeader; }
 
 @section Styles {
@@ -15,7 +15,7 @@
 
 <div class="d-flex align-items-center gap-3 mb-3">
     <h1 class="mb-0"><i class="fa-solid fa-ship"></i> @ShipsHeader</h1>
-    <partial name="_ActionButton" model='ActionButtonModel.CreateLink("btn-sm ms-auto")' />
+    <partial name="_ActionButton" model='ActionButtonViewModel.CreateLink("btn-sm ms-auto")' />
     <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">@BackToAdminCaption</a>
 </div>
 
@@ -34,8 +34,7 @@
                                asp-route-LaunchDateMin="@Model.Filter.LaunchDateMin"
                                asp-route-LaunchDateMax="@Model.Filter.LaunchDateMax"
                                asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
-                               asp-route-NameOrder="@Model.SortingInfo.NameOrder"
-                               asp-route-sortFieldName="Name" class="text-decoration-none text-dark fw-bold">
+                               asp-route-sortBy="Name" asp-route-order="@Model.NextOrder("Name")" class="text-decoration-none text-dark fw-bold">
                             @NameCaption <i class="bi bi-arrow-down-up"></i>
                         </a>
                     </th>
@@ -47,8 +46,7 @@
                            asp-route-LaunchDateMin="@Model.Filter.LaunchDateMin"
                            asp-route-LaunchDateMax="@Model.Filter.LaunchDateMax"
                            asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
-                           asp-route-RegistrationNumberOrder="@Model.SortingInfo.RegistrationNumberOrder"
-                           asp-route-sortFieldName="RegistrationNumber" class="text-decoration-none text-dark fw-bold">
+                           asp-route-sortBy="RegistrationNumber" asp-route-order="@Model.NextOrder("RegistrationNumber")" class="text-decoration-none text-dark fw-bold">
                             IMO <i class="bi bi-arrow-down-up"></i>
                         </a>
                     </th>
@@ -60,8 +58,7 @@
                            asp-route-LaunchDateMin="@Model.Filter.LaunchDateMin"
                            asp-route-LaunchDateMax="@Model.Filter.LaunchDateMax"
                            asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
-                           asp-route-LaunchDateOrder="@Model.SortingInfo.LaunchDateOrder"
-                           asp-route-sortFieldName="LaunchDate" class="text-decoration-none text-dark fw-bold">
+                           asp-route-sortBy="LaunchDate" asp-route-order="@Model.NextOrder("LaunchDate")" class="text-decoration-none text-dark fw-bold">
                             @ShortLaunchDateCaption <i class="bi bi-arrow-down-up"></i>
                        </a>
                     </th>
@@ -73,8 +70,7 @@
                            asp-route-LaunchDateMin="@Model.Filter.LaunchDateMin"
                            asp-route-LaunchDateMax="@Model.Filter.LaunchDateMax"
                            asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
-                           asp-route-ShipyardNameOrder="@Model.SortingInfo.ShipyardNameOrder"
-                           asp-route-sortFieldName="ShipyardName" class="text-decoration-none text-dark fw-bold">
+                           asp-route-sortBy="ShipyardName" asp-route-order="@Model.NextOrder("ShipyardName")" class="text-decoration-none text-dark fw-bold">
                             @ShipyardCaption <i class="bi bi-arrow-down-up"></i>
                         </a>
                     </th>
@@ -86,8 +82,7 @@
                            asp-route-LaunchDateMin="@Model.Filter.LaunchDateMin"
                            asp-route-LaunchDateMax="@Model.Filter.LaunchDateMax"
                            asp-route-TypeOfShipName="@Model.Filter.TypeOfShipName"
-                           asp-route-TypeOfShipNameOrder="@Model.SortingInfo.TypeOfShipNameOrder"
-                           asp-route-sortFieldName="TypeOfShipName" class="text-decoration-none text-dark fw-bold">
+                           asp-route-sortBy="TypeOfShipName" asp-route-order="@Model.NextOrder("TypeOfShipName")" class="text-decoration-none text-dark fw-bold">
                             @ShortTypeCaption <i class="bi bi-arrow-down-up"></i>
                         </a>
                     </th>

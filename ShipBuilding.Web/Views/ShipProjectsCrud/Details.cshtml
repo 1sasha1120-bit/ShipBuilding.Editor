@@ -1,5 +1,5 @@
 @using System.Globalization
-@model ShipBuilding.Web.Models.ShipProjectModels.ShipProjectEditingModel
+@model ShipBuilding.Web.ViewModels.ShipProjects.ShipProjectEditingViewModel
 @{ ViewData["Title"] = ProjectDetailsTitle; }
 
 @section Styles {
@@ -37,8 +37,8 @@
         </div>
 
         <div class="entity-actions">
-            <partial name="_ActionButton" model="ActionButtonModel.EditLink(Model.Id)" />
-            <partial name="_ActionButton" model="ActionButtonModel.DeleteLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonViewModel.EditLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButtonViewModel.DeleteLink(Model.Id)" />
             <a asp-action="Index" class="btn-back">@BackToListCaption</a>
         </div>
     </div>

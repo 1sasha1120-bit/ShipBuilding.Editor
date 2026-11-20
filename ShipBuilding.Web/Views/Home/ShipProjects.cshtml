@@ -1,4 +1,4 @@
-@model PagedList<ShipBuilding.Web.Models.ShipProjectModels.ShipProjectBrowsingModel>
+@model IReadOnlyList<ShipBuilding.Web.ViewModels.ShipProjects.ShipProjectBrowsingViewModel>
 @{
     ViewData["Title"] = ProjectsHeader;
 
@@ -23,15 +23,15 @@
         <table class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].Name)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].ProjectCode)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].ShipyardName)</th>
-                    <th class="text-end">@Html.DisplayNameFor(m => m.Items[0].Budget)</th>
-                    <th>@Html.DisplayNameFor(m => m.Items[0].Description)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].Name)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].ProjectCode)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].ShipyardName)</th>
+                    <th class="text-end">@Html.DisplayNameFor(m => m[0].Budget)</th>
+                    <th>@Html.DisplayNameFor(m => m[0].Description)</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Items)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td class="fw-medium">@item.Name</td>
@@ -45,7 +45,7 @@
                         <td class="text-muted small">@(item.Description ?? "—")</td>
                     </tr>
                 }
-                @if (Model.Items.Count == 0)
+                @if (Model.Count == 0)
                 {
                     <tr><td colspan="5" class="text-center text-muted py-4">@NoProjectsFoundMessage</td></tr>
                 }
@@ -54,4 +54,3 @@
     </div>
 </div>
 
-<partial name="_Pager" model="Model.Paging" />

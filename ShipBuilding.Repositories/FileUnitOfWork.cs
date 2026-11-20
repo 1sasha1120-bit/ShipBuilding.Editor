@@ -26,10 +26,6 @@ namespace ShipBuilding.Repositories
         public IShipsRepository ShipsRepository { get; }
         public IShipProjectsRepository ShipProjectsRepository { get; }
 
-        public void Dispose()
-        {
-        }
-
         public void Save()
         {
             _dataContext.Save();

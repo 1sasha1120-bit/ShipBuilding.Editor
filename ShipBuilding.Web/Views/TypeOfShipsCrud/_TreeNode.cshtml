@@ -1,4 +1,4 @@
-@model ShipBuilding.Web.Models.TypeOfShipModels.TypeOfShipBrowsingModel
+@model ShipBuilding.Web.ViewModels.TypeOfShips.TypeOfShipBrowsingViewModel
 @{
     bool? expandAll = ViewData["ExpandAll"] as bool?;
     bool isOpen = expandAll.HasValue ? expandAll.Value : Model.Depth < 2;

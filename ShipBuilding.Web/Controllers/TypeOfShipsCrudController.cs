@@ -1,10 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ShipBuilding.Entities;
-using ShipBuilding.Repositories.Extensions;
-using ShipBuilding.Repositories.Interfaces;
-using ShipBuilding.Web.Infrastructure;
-using ShipBuilding.Web.Models.Extensions;
-using ShipBuilding.Web.Models.TypeOfShipModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ShipBuilding.Services.Interfaces;
+using ShipBuilding.Services.TypeOfShips;
+using ShipBuilding.Web.ViewModels.TypeOfShips;
 using static ShipBuilding.Settings.UiSettings;
 using static ShipBuilding.Web.Resources.WebMessages;
 
@@ -12,15 +11,14 @@ namespace ShipBuilding.Web.Controllers
 {
     public class TypeOfShipsCrudController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ITypeOfShipsRepository _repository;
-        private readonly IEnumerable<TypeOfShip> _objects;
+        private readonly ITypeOfShipsService _types;
 
-        public TypeOfShipsCrudController(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+
+        public TypeOfShipsCrudController(ITypeOfShipsService types, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _repository = _unitOfWork.TypeOfShipsRepository;
-            _objects    = _repository.GetAll();
+            _types = types;
+            _mapper = mapper;
         }
 
         // ---------------------------------------------------------------------------
@@ -28,10 +26,16 @@ namespace ShipBuilding.Web.Controllers
         public IActionResult Index(TypeOfShipsFilter filter, bool? expand)
         {
             filter ??= new();
-            var treeData = TreeBuilder.BuildTree(_objects);
-            var flatData = TreeBuilder.BuildFlatList(_objects);
-            var model    = new TypeOfShipSelectionModel(filter, treeData, flatData, expand);
-            return View(model);
+            var query = _mapper.Map<TypeOfShipsQuery>(filter);
+
+            // Без фільтра view показує дерево, з фільтром — плоский список у порядку ієрархії
+            if (query.IsEmpty)
+            {
+                var tree = _mapper.Map<List<TypeOfShipBrowsingViewModel>>(_types.GetTree());
+                return View(new TypeOfShipSelectionViewModel(filter, tree, [], isFiltered: false, expand));
+            }
+            var found = _mapper.Map<List<TypeOfShipBrowsingViewModel>>(_types.GetList(query));
+            return View(new TypeOfShipSelectionViewModel(filter, [], found, isFiltered: true, expand));
         }
 
         // ---------------------------------------------------------------------------
@@ -39,44 +43,31 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
-            var obj = _repository.GetById(id);
+            var obj = _types.GetById(id);
             if (obj == null) return NotFound();
-            return View((TypeOfShipEditingModel)obj);
+
+            return View(_mapper.Map<TypeOfShipEditingViewModel>(obj));
         }
 
         // ---------------------------------------------------------------------------
 
         [HttpGet]
         public ActionResult Create() =>
-            View(new TypeOfShipEditingModel { ParentSelectList = _objects.CreateParentSelectList() });
+            View(new TypeOfShipEditingViewModel { ParentSelectList = ParentSelectList(null) });
 
         [HttpPost]
-        public ActionResult Create(TypeOfShipEditingModel model)
+        public ActionResult Create(TypeOfShipEditingViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var obj = model.ToTypeOfShip(_objects);
-                if (!obj.CheckCreation(_unitOfWork, out string? message))
+                if (_types.Create(_mapper.Map<TypeOfShipDto>(model), out string? message))
                 {
-                    ModelState.AddModelError("", message!);
+                    TempData["message"] = $"{DateMessageTemplate} {TypeOfShipCaption.ToLower()} \"{model.Name}\" {CreatedMessageTemplate}";
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    try
-                    {
-                        _repository.Add(obj);
-                        _unitOfWork.Save();
-                        TempData["message"] = CreatedMessage(TypeOfShipCaption, obj.Key);
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("",
-                            CreatingErrorMessage(TypeOfShipCaption, ex.Message));
-                    }
-                }
+                ModelState.AddModelError("", message!);
             }
-            model.ParentSelectList = _objects.CreateParentSelectList(model.ParentName);
+            model.ParentSelectList = ParentSelectList(model.ParentName);
             return View(model);
         }
 
@@ -85,40 +76,27 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var obj = _repository.GetById(id);
+            var obj = _types.GetById(id);
             if (obj == null) return NotFound();
-            var model = (TypeOfShipEditingModel)obj;
-            model.ParentSelectList = _objects.CreateParentSelectList(model.ParentName, id);
+
+            var model = _mapper.Map<TypeOfShipEditingViewModel>(obj);
+            model.ParentSelectList = ParentSelectList(model.ParentName, excludeId: id);
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(TypeOfShipEditingModel model)
+        public ActionResult Edit(TypeOfShipEditingViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var obj = model.ToTypeOfShip(_objects);
-                if (!obj.CheckUpdating(_unitOfWork, out string? message))
+                if (_types.Update(_mapper.Map<TypeOfShipDto>(model), out string? message))
                 {
-                    ModelState.AddModelError("", message!);
+                    TempData["message"] = $"{DateMessageTemplate} {TypeOfShipCaption.ToLower()} \"{model.Name}\" {UpdatedMessageTemplate}";
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    try
-                    {
-                        _repository.Update(obj);
-                        _unitOfWork.Save();
-                        TempData["message"] = UpdatedMessage(TypeOfShipCaption, obj.Key);
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("",
-                            UpdatingErrorMessage(TypeOfShipCaption, ex.Message));
-                    }
-                }
+                ModelState.AddModelError("", message!);
             }
-            model.ParentSelectList = _objects.CreateParentSelectList(model.ParentName, excludeId: model.Id);
+            model.ParentSelectList = ParentSelectList(model.ParentName, excludeId: model.Id);
             return View(model);
         }
 
@@ -127,32 +105,37 @@ namespace ShipBuilding.Web.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var obj = _objects.FirstOrDefault(e => e.Id == id);
+            var obj = _types.GetById(id);
             if (obj == null) return NotFound();
-            return View(obj.ToDeletingModel());
+
+            return View(_mapper.Map<TypeOfShipDeletingViewModel>(obj));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(TypeOfShipDeletingModel model)
+        public ActionResult Delete(TypeOfShipDeletingViewModel model)
         {
-            var obj = _objects.FirstOrDefault(e => e.Id == model.Id);
+            var obj = _types.GetById(model.Id);
             if (obj == null)
             {
                 TempData["message"] = NotFoundMessage(TypeOfShipCaption, model.Id);
             }
+            else if (!_types.Delete(model.Id, out string? message))
+            {
+                TempData["error"] = message;
+                return RedirectToAction("Delete", new { id = model.Id });
+            }
             else
             {
-                if (!obj.CheckDeleting(_unitOfWork, out string? message))
-                {
-                    TempData["error"] = message;
-                    return RedirectToAction("Delete", new { id = model.Id });
-                }
-                _repository.Delete(model.Id);
-                _unitOfWork.Save();
-                TempData["message"] = DeletedMessage(TypeOfShipCaption, obj.Key);
+                TempData["message"] = $"{DateMessageTemplate} {TypeOfShipCaption.ToLower()} \"{obj.Key}\" {DeletedMessageTemplate}";
             }
             return RedirectToAction("Index");
         }
+
+        // ---------------------------------------------------------------------------
+
+        // Можливі батьківські типи; під час редагування без самого типу та його нащадків
+        private SelectList ParentSelectList(string? selectedValue, int? excludeId = null) =>
+            new(_types.GetParentCandidates(excludeId), selectedValue);
     }
 }

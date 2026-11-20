@@ -1,5 +1,3 @@
-@using ShipBuilding.Web.Models.Extensions
-@model ShipBuilding.Web.Models.AdminPanelModels.AdminPanelModel
 @{
     ViewData["Title"] = AdminPanelCaption;
 }
@@ -19,65 +17,60 @@
     </a>
 </div>
 
-<div class="admin-grid mb-4">
-    @foreach (var s in Model.Sections)
-    {
-        <div class="admin-tile">
-            <a asp-controller="@s.Controller" asp-action="Index" class="admin-tile-main">
-                <div class="admin-tile-icon"><i class="@s.IconCss"></i></div>
-                <div class="admin-tile-title">@s.Title</div>
-                <div class="admin-tile-sub">@s.Description</div>
-                <div class="admin-tile-count">
-                    <strong>@s.Count</strong> <span>@Html.DisplayNameFor(m => m.Sections[0].Count).ToLower()</span>
-                </div>
+<div class="admin-grid">
+    <div class="admin-tile">
+        <a asp-controller="TypeOfShipsCrud" asp-action="Index" class="admin-tile-main">
+            <div class="admin-tile-icon"><i class="fa-solid fa-sitemap"></i></div>
+            <div class="admin-tile-title">@TypeOfShipsHeader</div>
+            <div class="admin-tile-sub">@TypeOfShipsDescription</div>
+        </a>
+        <div class="admin-tile-actions">
+            <a asp-controller="TypeOfShipsCrud" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-list-ul"></i> @OpenListCaption
             </a>
-            <div class="admin-tile-actions">
-                <a asp-controller="@s.Controller" asp-action="Index" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-list-ul"></i> @OpenListCaption
-                </a>
-                <partial name="_ActionButton" model='ActionButtonModel.CreateLink("btn-sm", s.Controller)' />
-            </div>
+            <partial name="_ActionButton" model='ActionButtonViewModel.CreateLink("btn-sm", "TypeOfShipsCrud")' />
         </div>
-    }
-</div>
-
-<div class="entity-card">
-    <div class="entity-card-header">
-        <h2 class="admin-card-title">@Html.DisplayNameFor(m => m.IncompleteRecords)</h2>
-        <span class="badge rounded-pill @(Model.IncompleteRecords.Count == 0 ? "bg-success" : "bg-warning text-dark")">@Model.IncompleteRecords.Count</span>
     </div>
-    <div class="entity-card-body p-0">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th>@Html.DisplayNameFor(m => m.IncompleteRecords[0].Section)</th>
-                    <th>@Html.DisplayNameFor(m => m.IncompleteRecords[0].Name)</th>
-                    <th>@Html.DisplayNameFor(m => m.IncompleteRecords[0].MissingFields)</th>
-                    <th class="col-actions-160"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.IncompleteRecords)
-                {
-                    <tr>
-                        <td class="text-muted text-nowrap">@r.Section</td>
-                        <td><a asp-controller="@r.Kind.ControllerFor()" asp-action="Details" asp-route-id="@r.Id">@(r.Name ?? "—")</a></td>
-                        <td>
-                            @foreach (var field in r.MissingFields)
-                            {
-                                <span class="admin-missing">@field</span>
-                            }
-                        </td>
-                        <td class="text-end">
-                            <partial name="_ActionButton" model='ActionButtonModel.EditLink(r.Id, "btn-sm", r.Kind.ControllerFor())' />
-                        </td>
-                    </tr>
-                }
-                @if (Model.IncompleteRecords.Count == 0)
-                {
-                    <tr><td colspan="4" class="text-center text-muted py-4">@AllRecordsCompleteMessage</td></tr>
-                }
-            </tbody>
-        </table>
+
+    <div class="admin-tile">
+        <a asp-controller="ShipyardsCrud" asp-action="Index" class="admin-tile-main">
+            <div class="admin-tile-icon"><i class="fa-solid fa-industry"></i></div>
+            <div class="admin-tile-title">@ShipyardsHeader</div>
+            <div class="admin-tile-sub">@ShipyardsDescription</div>
+        </a>
+        <div class="admin-tile-actions">
+            <a asp-controller="ShipyardsCrud" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-list-ul"></i> @OpenListCaption
+            </a>
+            <partial name="_ActionButton" model='ActionButtonViewModel.CreateLink("btn-sm", "ShipyardsCrud")' />
+        </div>
+    </div>
+
+    <div class="admin-tile">
+        <a asp-controller="ShipProjectsCrud" asp-action="Index" class="admin-tile-main">
+            <div class="admin-tile-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+            <div class="admin-tile-title">@ProjectsHeader</div>
+            <div class="admin-tile-sub">@ProjectsDescription</div>
+        </a>
+        <div class="admin-tile-actions">
+            <a asp-controller="ShipProjectsCrud" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-list-ul"></i> @OpenListCaption
+            </a>
+            <partial name="_ActionButton" model='ActionButtonViewModel.CreateLink("btn-sm", "ShipProjectsCrud")' />
+        </div>
+    </div>
+
+    <div class="admin-tile">
+        <a asp-controller="ShipsCrud" asp-action="Index" class="admin-tile-main">
+            <div class="admin-tile-icon"><i class="fa-solid fa-ship"></i></div>
+            <div class="admin-tile-title">@ShipsHeader</div>
+            <div class="admin-tile-sub">@ShipsDescription</div>
+        </a>
+        <div class="admin-tile-actions">
+            <a asp-controller="ShipsCrud" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-list-ul"></i> @OpenListCaption
+            </a>
+            <partial name="_ActionButton" model='ActionButtonViewModel.CreateLink("btn-sm", "ShipsCrud")' />
+        </div>
     </div>
 </div>

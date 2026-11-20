@@ -7,13 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common.Data\Common.Data.csproj" />
-    <ProjectReference Include="..\ShipBuilding.Repositories\ShipBuilding.Repositories.csproj" />
-    <ProjectReference Include="..\ShipBuilding\ShipBuilding.csproj" />
+    <ProjectReference Include="..\ShipBuilding.Services\ShipBuilding.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\files\" />
+    <!-- Файл даних лежить поза wwwroot, щоб його не можна було завантажити за прямим URL -->
+    <None Update="App_Data\**" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="17.0.0" />
   </ItemGroup>
 
 </Project>

@@ -34,7 +34,7 @@ namespace ShipBuilding.Entities
                 $"\t{NameCaption}: {Name}\n" +
                 $"\t{RegistrationNumberCaption}: {RegistrationNumber}\n" +
                 $"\t{LaunchDateCaption}: {LaunchDate}\n" + 
-                $"\t{StatusCaption}: {Status.GetDisplayName()}\n" +
+                $"\t{StatusCaption}: {TypesMethods.GetDisplayName(Status)}\n" +
                 $"\t{HeightCaption}: {Height}\n" +
                 $"\t{WidthCaption}: {Width}\n" +
                 $"\t{LengthCaption}: {Length}\n" +

@@ -6,7 +6,8 @@ namespace ShipBuilding.Types.Extensions
 {
     public static class TypesMethods
     {
-        public static string GetDisplayName(this ShipStatus status)
+        /// <summary>Назва статусу з атрибута [Display]; якщо його немає — ім'я значення.</summary>
+        public static string GetDisplayName(ShipStatus status)
         {
             FieldInfo? field = status.GetType().GetField(status.ToString());
             if (field == null) return status.ToString();
