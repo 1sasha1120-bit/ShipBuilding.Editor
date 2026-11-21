@@ -42,7 +42,7 @@
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <div class="entity-actions">
-                <partial name="_ActionButton" model="ActionButtonViewModel.DeleteSubmit()" />
+                <partial name="_ActionButton" model="ActionButton.DeleteSubmit()" />
                 <a asp-action="Index" class="btn btn-outline-secondary">@CancelCaption</a>
             </div>
         </form>

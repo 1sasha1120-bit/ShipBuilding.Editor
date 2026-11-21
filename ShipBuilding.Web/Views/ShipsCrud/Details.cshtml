@@ -61,8 +61,8 @@
         </div>
 
         <div class="entity-actions">
-            <partial name="_ActionButton" model="ActionButtonViewModel.EditLink(Model.Id)" />
-            <partial name="_ActionButton" model="ActionButtonViewModel.DeleteLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButton.EditLink(Model.Id)" />
+            <partial name="_ActionButton" model="ActionButton.DeleteLink(Model.Id)" />
             <a asp-action="Index" class="btn-back">@BackToListCaption</a>
         </div>
     </div>

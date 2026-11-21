@@ -44,7 +44,7 @@
                 <span asp-validation-for="CapacityPerYear" class="text-danger small"></span>
             </div>
             <div class="entity-actions">
-                <partial name="_ActionButton" model="ActionButtonViewModel.CreateSubmit()" />
+                <partial name="_ActionButton" model="ActionButton.CreateSubmit()" />
                 <a asp-action="Index" class="btn-back">@BackToListCaption</a>
             </div>
         </form>
