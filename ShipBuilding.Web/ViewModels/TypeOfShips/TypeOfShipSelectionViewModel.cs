@@ -14,7 +14,6 @@ namespace ShipBuilding.Web.ViewModels.TypeOfShips
 
         public TypeOfShipBrowsingViewModel SelectedObject { get; set; } = new();
 
-        /// <param name="flatData">Плоский список в порядку ієрархії, уже відфільтрований сервісом.</param>
         public TypeOfShipSelectionViewModel(
             TypeOfShipsFilter filter,
             IReadOnlyList<TypeOfShipBrowsingViewModel> treeData,

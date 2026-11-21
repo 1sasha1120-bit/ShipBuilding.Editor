@@ -3,10 +3,6 @@ using static ShipBuilding.Settings.UiSettings;
 
 namespace ShipBuilding.Web.ViewModels.Home
 {
-    /// <summary>
-    /// Модель головної сторінки. Містить лише те, що показує сторінка, разом із підписами;
-    /// заповнюється в HomeController з даних сервісу статистики.
-    /// </summary>
     public class DashboardViewModel
     {
         [Display(Name = TypeOfShipsHeader)]
@@ -24,7 +20,6 @@ namespace ShipBuilding.Web.ViewModels.Home
         [Display(Name = ShipsByStatusHeader)]
         public IReadOnlyList<StatusItem> ShipsByStatus { get; set; } = [];
 
-        /// <summary>Бюджет проєктів; null, якщо в жодного проєкту бюджет не задано.</summary>
         [Display(Name = BudgetHeader)]
         public BudgetItem? Budget { get; set; }
 
@@ -39,7 +34,7 @@ namespace ShipBuilding.Web.ViewModels.Home
 
         // ---------------------------------------------------------------------------
 
-        /// <summary>Частка суден з одним статусом.</summary>
+        // Частка суден з одним статусом.
         public class StatusItem
         {
             [Display(Name = StatusCaption)]
@@ -49,7 +44,7 @@ namespace ShipBuilding.Web.ViewModels.Home
 
             public double Percent { get; set; }
 
-            /// <summary>Колір Bootstrap для статусу (success, warning…).</summary>
+            // Колір Bootstrap для статусу (success, warning…).
             public string Color { get; set; } = "light";
         }
 

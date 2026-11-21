@@ -3,7 +3,6 @@ using ShipBuilding.Services.Shipyards;
 
 namespace ShipBuilding.Web.ViewModels.Shipyards
 {
-    /// <summary>Перетворення між даними сервісу верфей і view-моделями (поля зіставляються за назвами).</summary>
     public class ShipyardProfile : Profile
     {
         public ShipyardProfile()

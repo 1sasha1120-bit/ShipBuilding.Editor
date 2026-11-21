@@ -3,7 +3,6 @@ using ShipBuilding.Services.ShipProjects;
 
 namespace ShipBuilding.Web.ViewModels.ShipProjects
 {
-    /// <summary>Перетворення між даними сервісу проєктів і view-моделями (поля зіставляються за назвами).</summary>
     public class ShipProjectProfile : Profile
     {
         public ShipProjectProfile()

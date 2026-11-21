@@ -16,9 +16,6 @@ namespace ShipBuilding.Web.ViewModels.TypeOfShips
         [Display(Name = ParentCaption)]
         public string? ParentName { get; set; }
 
-        //[Display(Name = DescriptionCaption)]
-        //public string? Description { get; set; }
-
         // ----------------------------------------------------
 
         public int Depth { get; set; }
